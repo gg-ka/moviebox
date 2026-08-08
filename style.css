@@ -1,0 +1,192 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    font-family: Arial, sans-serif;
+}
+
+
+body {
+    background-color: #0f0f0f;
+    color: #ffffff;
+}
+
+.cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 20px 60px;
+
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.cabecalho nav {
+    display: flex;
+    gap: 24px;
+}
+
+.cabecalho a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.cabecalho a:hover {
+    color: #e50914;
+}
+
+.hero {
+    padding: 100px 20px;
+    text-align: center;
+}
+
+.hero_conteudo {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.hero h2 {
+    font-size: 42px;
+    margin-bottom: 16px;
+}
+
+.hero p {
+    color: #b3b3b3;
+    font-size: 18px;
+    margin-bottom: 32px;
+}
+
+.busca {
+    display: flex;
+    gap: 10px;
+}
+
+.busca input {
+    flex: 1; /* fica com o espaço que sobrar */
+    padding: 14px 16px;
+
+    border: 1px solid #333333;
+    border-radius: 12px;
+
+    background-color: #1a1a1a;
+    color: #ffffff;
+
+    font-size: 16px;
+}
+
+.busca button {
+    padding: 14px 24px;
+    border: none;
+    border-radius: 12px; /* define o quao arredondado vai ser */
+    background-color: #e50914;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.busca button:hover {
+    background-color: #b20710;
+}
+
+.filmes {
+    max-width: 1100px;
+    margin: 0 auto;
+
+    padding: 20px 40px 80px;
+}
+
+.filmes h2 {
+    margin-bottom: 24px;
+}
+
+.lista_filmes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.card_filme {
+    overflow: hidden;
+    border: 1px solid #292929;
+    border-radius: 12px;
+
+    background-color: #181818;
+    transition: transform 0.2s ease;
+}
+
+.card_filme:hover {
+    transform: translateY(-5px);
+}
+
+.capa_placeholder {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 300px;
+    background-color: #262626;
+    font-size: 60px;
+}
+
+.card_conteudo {
+    padding: 18px;
+}
+
+.card_conteudo h3 {
+    margin-bottom: 8px;
+}
+
+.card_conteudo p {
+    color: #f5c518;
+}
+
+
+
+/* breakpoints */
+@media (max-width: 950px) {
+
+    .lista_filmes {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .cabecalho {
+        padding: 20px;
+
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .hero {
+        padding: 70px 20px;
+    }
+
+    .hero h2 {
+        font-size: 32px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    .busca {
+        flex-direction: column;
+    }
+
+    .busca button {
+        width: 100%;
+    }
+
+    .filmes {
+        padding: 20px 20px 60px;
+    }
+
+    .lista_filmes {
+        grid-template-columns: 1fr;
+    }
+
+}

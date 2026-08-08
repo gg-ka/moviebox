@@ -6,7 +6,20 @@ const URL_IMAGEM = "https://image.tmdb.org/t/p/w500";
 /* . = classe
 # = id */
 
-async function carregarFilmesPopulares() {
+function mostrarMensagem(texto) {
+    listaFilmes.innerHTML = "";
+
+    const mensagem = document.createElement("p");
+
+    mensagem.classList.add("mensagem");
+    mensagem.textContent = texto;
+
+    listaFilmes.appendChild(mensagem);
+}
+
+async function carregarFilmesPopulares(){
+
+    mostrarMensagem("Carregando filmes...");
 
     try {
         const url =
@@ -23,6 +36,7 @@ async function carregarFilmesPopulares() {
 
 }  catch (erro) {
         console.error("Erro ao carregar filmes populares:", erro);
+        mostrarMensagem("Não foi possível carregar os filmes.");
     }
 }
 
@@ -66,10 +80,7 @@ function mostrarFilmes(filmes) {
     listaFilmes.innerHTML = "";
 
     if (filmes.length === 0) {
-        const mensagem = document.createElement("p");
-        mensagem.classList.add("mensagem");
-        mensagem.textContent = "Nenhum filme encontrado.";
-        listaFilmes.appendChild(mensagem);
+        mostrarMensagem("Nenhum filme encontrado.");
         return;
     }
 
@@ -90,6 +101,8 @@ async function buscarFilmes() {
         carregarFilmesPopulares();
         return;
     }
+
+    mostrarMensagem("Buscando filmes...");
 
     try {
         const url =

@@ -119,12 +119,60 @@ body {
 
 .lista_filmes {
     display: grid;
-    width: 1400px;
-    grid-template-columns: repeat(5, 1fr);
+
+    width: 100%;
+
+    grid-template-columns: repeat(5, minmax(0, 1fr));
 
     gap: 24px;
 }
 
+
+/* TABLET */
+
+@media (max-width: 950px) {
+
+    .lista_filmes {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+}
+
+
+/* CELULAR */
+
+@media (max-width: 768px) {
+
+    .lista_filmes {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        padding: 0 20px;
+    }
+
+    .filmes h2 {
+        padding: 0 20px;
+    }
+
+}
+
+
+/* CELULAR MUITO PEQUENO */
+
+@media (max-width: 400px) {
+
+    .lista_filmes {
+        grid-template-columns: 1fr;
+    }
+
+    .card_filme {
+        width: 100%;
+        max-width: 260px;
+
+        justify-self: center;
+    }
+
+}
 
 /* CARD */
 
@@ -190,68 +238,4 @@ body {
 
 .card_conteudo p {
     color: #f5c518;
-}
-
-
-/* tablet/ipad */
-
-@media (max-width: 950px) {
-
-    .lista_filmes {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-}
-
-
-/* celular */
-
-@media (max-width: 768px) {
-
-    .cabecalho {
-        padding: 20px;
-
-        flex-direction: column;
-        gap: 16px;
-    }
-
-    .hero {
-        padding: 70px 20px;
-    }
-
-    .hero h2 {
-        font-size: 32px;
-    }
-
-    .hero p {
-        font-size: 16px;
-    }
-
-    .busca {
-        flex-direction: column;
-    }
-
-    .busca button {
-        width: 100%;
-    }
-
-    .filmes {
-        padding: 20px 20px 60px;
-    }
-
-    .lista_filmes {
-        grid-template-columns: 1fr;
-    }
-
-}
-
-.mensagem {
-    color: #b3b3b3;
-    font-size: 18px;
-
-    grid-column: 1 / -1;
-
-    text-align: center;
-
-    padding: 200px 0;
 }

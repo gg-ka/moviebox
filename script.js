@@ -6,12 +6,6 @@ const URL_IMAGEM = "https://image.tmdb.org/t/p/w500";
 /* . = classe
 # = id */
 
-campoBusca.addEventListener("keydown", function(event) {
-    if (event.key === "Enter") {
-        buscarFilmes();
-    }
-});
-
 async function carregarFilmesPopulares() {
 
     try {
@@ -71,6 +65,14 @@ function mostrarFilmes(filmes) {
 
     listaFilmes.innerHTML = "";
 
+    if (filmes.length === 0) {
+        const mensagem = document.createElement("p");
+        mensagem.classList.add("mensagem");
+        mensagem.textContent = "Nenhum filme encontrado.";
+        listaFilmes.appendChild(mensagem);
+        return;
+    }
+
     filmes.forEach(function (filme) {
 
         const card = criarCardFilme(filme);
@@ -81,4 +83,39 @@ function mostrarFilmes(filmes) {
 
 }
 
+async function buscarFilmes() {
+    const termo = campoBusca.value.trim();
+
+    if (termo === "") {
+        carregarFilmesPopulares();
+        return;
+    }
+
+    try {
+        const url =
+        `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=pt-BR&query=${encodeURIComponent(termo)}`;
+
+        const resposta = await fetch(url);
+        if (!resposta.ok) {
+            throw new Error("Não foi possível pesquisar os filmes.");
+        }
+
+        const dados = await resposta.json();
+        mostrarFilmes(dados.results);
+
+    } catch (erro) {
+        console.error("Erro ao pesquisar filmes:", erro);
+    }
+
+}
+
 carregarFilmesPopulares();
+
+botaoBusca.addEventListener("click", buscarFilmes);
+campoBusca.addEventListener("keydown", function (event) {
+
+    if (event.key === "Enter") {
+        buscarFilmes();
+    }
+
+});

@@ -12,7 +12,7 @@ body {
 }
 
 
-/* CABEÇALHO */
+/* cabeçalho */
 
 .cabecalho {
     display: flex;
@@ -39,7 +39,7 @@ body {
 }
 
 
-/* HERO */
+/* hero */
 
 .hero {
     padding: 100px 20px;
@@ -64,7 +64,7 @@ body {
 }
 
 
-/* BUSCA */
+/* busca */
 
 .busca {
     display: flex;
@@ -104,13 +104,13 @@ body {
 }
 
 
-/* FILMES */
+/* filmes */
 
 .filmes {
-    max-width: 1100px;
+    max-width: 1400px;
     margin: 0 auto;
 
-    padding: 20px 40px 80px;
+    padding: 20px 0 80px;
 }
 
 .filmes h2 {
@@ -119,8 +119,8 @@ body {
 
 .lista_filmes {
     display: grid;
-
-    grid-template-columns: repeat(3, 1fr);
+    width: 1400px;
+    grid-template-columns: repeat(5, 1fr);
 
     gap: 24px;
 }
@@ -130,6 +130,8 @@ body {
 
 .card_filme {
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 
     border: 1px solid #292929;
     border-radius: 12px;
@@ -143,18 +145,24 @@ body {
     transform: translateY(-5px);
 }
 
-
-/* CAPA */
-
-.capa_filme {
-    display: block;
-
-    width: 100%;
-    height: auto;
+.card_conteudo {
+    padding: 18px;
+    flex: 1;
 }
 
 
-/* FILME SEM CAPA */
+/* Capa */
+
+.capa_filme {
+    display: block;
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    object-position: center;
+}
+
+
+/* Filme sem capa */
 
 .sem_capa {
     display: flex;
@@ -170,7 +178,7 @@ body {
 }
 
 
-/* CONTEÚDO DO CARD */
+/* conteudo do CARD */
 
 .card_conteudo {
     padding: 18px;
@@ -185,7 +193,7 @@ body {
 }
 
 
-/* TABLET */
+/* tablet/ipad */
 
 @media (max-width: 950px) {
 
@@ -196,7 +204,7 @@ body {
 }
 
 
-/* CELULAR */
+/* celular */
 
 @media (max-width: 768px) {
 
@@ -237,12 +245,13 @@ body {
 
 }
 
-img.capa_filme {
-    display: block !important;
+.mensagem {
+    color: #b3b3b3;
+    font-size: 18px;
 
-    width: 100% !important;
-    max-width: 100% !important;
-    height: auto !important;
+    grid-column: 1 / -1;
 
-    object-fit: contain !important;
+    text-align: center;
+
+    padding: 200px 0;
 }

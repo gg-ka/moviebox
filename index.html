@@ -1,4 +1,5 @@
-<DOCTYPE html>
+<!DOCTYPE html>
+
 <html lang="pt-BR">
 
 <head>
@@ -13,80 +14,68 @@
 <body>
 
     <header class="cabecalho">
+
         <h1>MovieBox</h1>
-    
+
         <nav>
-            <a href=#>Início</a>
-            <a href=#>Favoritos</a>
+            <a href="#">Início</a>
+            <a href="#">Favoritos</a>
         </nav>
+
     </header>
+
 
     <main>
 
-    <section class="hero">
-        <div class="hero_conteudo">
-            <h2>Encontre seu próximo filme</h2>
-            <p>Pesquise filmes e descubra novas histórias para assistir.</p>
+        <section class="hero">
 
-            <div class="busca">
-                <input 
-                type="text"
-                id="campo_busca"
-                placeholder="Pesquisar filme...">
+            <div class="hero_conteudo">
 
-                <button type="button" id="botao_busca">
-                    Pesquisar
-                </button>
+                <h2>Encontre seu próximo filme</h2>
+
+                <p>
+                    Pesquise filmes e descubra novas histórias para assistir.
+                </p>
+
+                <div class="busca">
+
+                    <input
+                        type="text"
+                        id="campo_busca"
+                        placeholder="Pesquisar filme..."
+                    >
+
+                    <button
+                        type="button"
+                        id="botao_busca"
+                    >
+                        Pesquisar
+                    </button>
+
+                </div>
+
             </div>
-        
-        </div>
-    </section>
+
+        </section>
+
 
         <section class="filmes">
 
             <h2>Filmes populares</h2>
 
-            <div class="lista_filmes">
+            <div
+                class="lista_filmes"
+                id="lista_filmes"
+            ></div>
 
-                <article class="card_filme">
-                    <div class="capa_placeholder">
-                        🎬
-                    </div>
-
-                    <div class="card_conteudo">
-                        <h3>Garota Exemplar</h3>
-                        <p>⭐ 8.7</p>
-                    </div>
-                </article>
-
-                <article class="card_filme">
-                    <div class="capa_placeholder">
-                        🎬
-                    </div>
-
-                    <div class="card_conteudo">
-                        <h3>O Poderoso Chefão</h3>
-                        <p>⭐ 9.2</p>
-                    </div>
-                </article>
-
-                <article class="card_filme">
-                    <div class="capa_placeholder">
-                        🎬
-                    </div>
-
-                    <div class="card_conteudo">
-                        <h3>Acompanhante Perfeita</h3>
-                        <p>⭐ 8.6</p>
-                    </div>
-                </article>
-
-            </div>
         </section>
 
     </main>
+
+
+    <script src="config.js"></script>
     <script src="script.js"></script>
+
 </body>
 
 </html>
-</DOCTYPE>

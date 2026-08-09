@@ -25,15 +25,15 @@ O projeto utiliza a API do **TMDB** para exibir filmes populares, mais bem avali
 
 ### Página inicial
 
-> Screenshot em breve.
+> ![Página inicial do MovieBox](assets/home.jpeg)
 
 ### Detalhes do filme
 
-> Screenshot em breve.
+> ![Detalhes de um filme no MovieBox](assets/detalhes.jpeg)
 
 ### Favoritos
 
-> Screenshot em breve.
+> ![Página de favoritos do MovieBox](assets/favoritos.png)
 
 ## 🛠️ Tecnologias utilizadas
 

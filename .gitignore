@@ -1,2 +1,6 @@
 config.js
 player.local.js
+.env
+.env.local
+.env.*.local
+.vercel

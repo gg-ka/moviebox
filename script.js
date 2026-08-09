@@ -35,6 +35,44 @@ const URL_BACKDROP =
 let filmeDestaqueAtual = null;
 
 
+/* monta a url da nossa api sem expor a chave da tmdb no navegador */
+function criarUrlTmdb(
+    caminho,
+    parametros = {}
+) {
+
+    const busca =
+        new URLSearchParams({
+            path: caminho
+        });
+
+
+    Object.entries(
+        parametros
+    ).forEach(
+        function ([chave, valor]) {
+
+            if (
+                valor !== undefined &&
+                valor !== null &&
+                valor !== ""
+            ) {
+
+                busca.set(
+                    chave,
+                    valor
+                );
+            }
+        }
+    );
+
+
+    return (
+        `/api/tmdb?${busca.toString()}`
+    );
+}
+
+
 /*
     . = classe
     # = id
@@ -181,7 +219,13 @@ async function buscarCategoria(
 ) {
 
     const url =
-        `https://api.themoviedb.org/3${endpoint}?api_key=${API_KEY}&language=pt-BR&region=BR`;
+        criarUrlTmdb(
+            endpoint,
+            {
+                language: "pt-BR",
+                region: "BR"
+            }
+        );
 
 
     const resposta =
@@ -1193,7 +1237,13 @@ async function buscarFilmes() {
     try {
 
         const url =
-            `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=pt-BR&query=${encodeURIComponent(termo)}`;
+            criarUrlTmdb(
+                "/search/movie",
+                {
+                    language: "pt-BR",
+                    query: termo
+                }
+            );
 
 
         const resposta =
@@ -1257,7 +1307,13 @@ async function carregarDetalhesFilme(
     try {
 
         const url =
-            `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR&append_to_response=videos`;
+            criarUrlTmdb(
+                `/movie/${id}`,
+                {
+                    language: "pt-BR",
+                    append_to_response: "videos"
+                }
+            );
 
 
         const resposta =
@@ -1739,7 +1795,13 @@ async function abrirTrailerPorId(
     try {
 
         const url =
-            `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR&append_to_response=videos`;
+            criarUrlTmdb(
+                `/movie/${id}`,
+                {
+                    language: "pt-BR",
+                    append_to_response: "videos"
+                }
+            );
 
 
         const resposta =

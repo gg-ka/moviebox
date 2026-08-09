@@ -25,8 +25,12 @@ const listaAvaliados = document.querySelector("#lista_avaliados");
 const listaCartaz = document.querySelector("#lista_cartaz");
 const listaLancamentos = document.querySelector("#lista_lancamentos");
 
-const URL_IMAGEM = "https://image.tmdb.org/t/p/w500";
-const URL_BACKDROP = "https://image.tmdb.org/t/p/w1280";
+const URL_IMAGEM =
+    "https://image.tmdb.org/t/p/w500";
+
+const URL_BACKDROP =
+    "https://image.tmdb.org/t/p/w1280";
+
 
 let filmeDestaqueAtual = null;
 
@@ -38,17 +42,34 @@ let filmeDestaqueAtual = null;
 
 
 // marca no menu qual parte do site esta aberta
-function atualizarMenuAtivo(linkAtivo = null) {
+function atualizarMenuAtivo(
+    linkAtivo = null
+) {
 
-    linkInicio.classList.remove("ativo");
-    linkFavoritos.classList.remove("ativo");
+    linkInicio.classList.remove(
+        "ativo"
+    );
 
-    linkInicio.removeAttribute("aria-current");
-    linkFavoritos.removeAttribute("aria-current");
+    linkFavoritos.classList.remove(
+        "ativo"
+    );
+
+
+    linkInicio.removeAttribute(
+        "aria-current"
+    );
+
+    linkFavoritos.removeAttribute(
+        "aria-current"
+    );
+
 
     if (linkAtivo) {
 
-        linkAtivo.classList.add("ativo");
+        linkAtivo.classList.add(
+            "ativo"
+        );
+
 
         linkAtivo.setAttribute(
             "aria-current",
@@ -64,13 +85,16 @@ function mostrarTelaHome() {
         "oculto"
     );
 
+
     resultadosView.classList.add(
         "oculto"
     );
 
+
     destaque.classList.remove(
         "destaque_oculto"
     );
+
 
     atualizarMenuAtivo(
         linkInicio
@@ -84,15 +108,18 @@ function mostrarTelaResultados() {
         "oculto"
     );
 
+
     resultadosView.classList.remove(
         "oculto"
     );
+
 
     destaque.classList.add(
         "destaque_oculto"
     );
 
-    // pesquisa nao eh inicio nem favoritos, entao nao marco nenhum
+
+    // pesquisa nao eh inicio nem favoritos
     atualizarMenuAtivo();
 }
 
@@ -107,18 +134,23 @@ function mostrarCarrossel(
     container
 ) {
 
-    container.innerHTML = "";
+    container.innerHTML =
+        "";
 
 
     filmes.forEach(
         function (filme) {
 
             const card =
-                criarCardFilme(filme);
+                criarCardFilme(
+                    filme
+                );
+
 
             card.classList.add(
                 "card_carrossel"
             );
+
 
             container.appendChild(
                 card
@@ -127,7 +159,8 @@ function mostrarCarrossel(
     );
 
 
-    container.scrollLeft = 0;
+    container.scrollLeft =
+        0;
 
 
     requestAnimationFrame(
@@ -141,6 +174,8 @@ function mostrarCarrossel(
 }
 
 
+/* busca uma categoria na tmdb */
+
 async function buscarCategoria(
     endpoint
 ) {
@@ -150,7 +185,9 @@ async function buscarCategoria(
 
 
     const resposta =
-        await fetch(url);
+        await fetch(
+            url
+        );
 
 
     if (!resposta.ok) {
@@ -170,8 +207,8 @@ async function buscarCategoria(
 
 
 /*
-    o upcoming da tmdb as vezes traz filme que ja saiu,
-    entao filtro pela data aq
+    o upcoming da tmdb as vezes traz
+    filme que ja saiu, entao filtro aq
 */
 
 function filtrarProximosLancamentos(
@@ -198,15 +235,94 @@ function filtrarProximosLancamentos(
                 );
 
 
-            return dataLancamento > hoje;
+            return (
+                dataLancamento >
+                hoje
+            );
         }
     );
 }
 
 
+/* cria os cards falsos enquanto os filmes carregam */
+
+function mostrarSkeletonCarrossel(
+    container,
+    quantidade = 6
+) {
+
+    container.innerHTML =
+        "";
+
+
+    for (
+        let i = 0;
+        i < quantidade;
+        i++
+    ) {
+
+        const skeleton =
+            document.createElement(
+                "div"
+            );
+
+
+        skeleton.classList.add(
+            "skeleton_card"
+        );
+
+
+        skeleton.innerHTML = `
+            <div class="skeleton_poster"></div>
+
+            <div class="skeleton_info">
+
+                <div
+                    class="skeleton_linha skeleton_titulo">
+                </div>
+
+                <div
+                    class="skeleton_linha skeleton_nota">
+                </div>
+
+            </div>
+        `;
+
+
+        container.appendChild(
+            skeleton
+        );
+    }
+}
+
+
+/* carrega tudo que aparece na home */
+
 async function carregarHome() {
 
     mostrarTelaHome();
+
+
+    // mostra os skeletons antes da api terminar
+
+    mostrarSkeletonCarrossel(
+        listaPopulares
+    );
+
+
+    mostrarSkeletonCarrossel(
+        listaAvaliados
+    );
+
+
+    mostrarSkeletonCarrossel(
+        listaCartaz
+    );
+
+
+    mostrarSkeletonCarrossel(
+        listaLancamentos
+    );
 
 
     try {
@@ -277,6 +393,29 @@ async function carregarHome() {
         console.error(
             "Erro ao carregar a home:",
             erro
+        );
+
+
+        /*
+            se a api falhar eu tiro os skeletons,
+            senao parece que ta carregando pra sempre
+        */
+
+        [
+            listaPopulares,
+            listaAvaliados,
+            listaCartaz,
+            listaLancamentos
+        ].forEach(
+            function (container) {
+
+                container.innerHTML =
+                    `
+                    <p class="mensagem">
+                        Não foi possível carregar os filmes.
+                    </p>
+                    `;
+            }
         );
     }
 }
@@ -428,11 +567,13 @@ function carregarFavoritosSalvos() {
 
     try {
 
-        return JSON.parse(
-            localStorage.getItem(
-                "moviebox_favoritos"
-            )
-        ) || [];
+        return (
+            JSON.parse(
+                localStorage.getItem(
+                    "moviebox_favoritos"
+                )
+            ) || []
+        );
 
     } catch (erro) {
 
@@ -462,20 +603,24 @@ function salvarFavoritos() {
 }
 
 
-function filmeEstaFavoritado(id) {
+function filmeEstaFavoritado(
+    id
+) {
 
     return favoritos.some(
         function (filme) {
 
-            return filme.id === id;
+            return (
+                filme.id === id
+            );
         }
     );
 }
 
 
 /*
-    atualiza todos os coracoes pq o mesmo filme pode
-    aparecer em mais de uma fileira
+    atualiza todos os coracoes pq
+    o filme pode aparecer em mais de uma fileira
 */
 
 function atualizarCoracoesCards() {
@@ -533,6 +678,8 @@ function atualizarCoracoesCards() {
 }
 
 
+/* atualiza o coracao de dentro do modal */
+
 function atualizarBotaoFavorito(
     botao,
     id
@@ -577,6 +724,8 @@ function atualizarBotaoFavorito(
             : "Adicionar aos favoritos";
 }
 
+
+/* adiciona ou tira dos favoritos */
 
 function alternarFavorito(
     filme,
@@ -627,7 +776,7 @@ function alternarFavorito(
     atualizarCoracoesCards();
 
 
-    // no modal eu passo o proprio botao pra atualizar ele tb
+    // no modal eu passo o proprio botao
     if (botao) {
 
         atualizarBotaoFavorito(
@@ -636,6 +785,11 @@ function alternarFavorito(
         );
     }
 
+
+    /*
+        se remover na propria pagina de favoritos
+        a lista precisa atualizar na hora
+    */
 
     if (
         tituloSecao.textContent ===
@@ -657,6 +811,7 @@ function carregarPlayerLocal() {
     if (
         typeof LOCAL_PLAYER_ENABLED ===
             "undefined" ||
+
         LOCAL_PLAYER_ENABLED ===
             false
     ) {
@@ -740,6 +895,8 @@ function mostrarMensagem(
 }
 
 
+/* cria cada card de filme */
+
 function criarCardFilme(
     filme
 ) {
@@ -754,6 +911,8 @@ function criarCardFilme(
         "card_filme"
     );
 
+
+    /* capa */
 
     if (filme.poster_path) {
 
@@ -802,6 +961,8 @@ function criarCardFilme(
         );
     }
 
+
+    /* informacoes do card */
 
     const conteudo =
         document.createElement(
@@ -859,6 +1020,8 @@ function criarCardFilme(
     );
 
 
+    /* abre detalhes */
+
     card.addEventListener(
         "click",
         function () {
@@ -869,6 +1032,8 @@ function criarCardFilme(
         }
     );
 
+
+    /* coracao */
 
     const botaoFavorito =
         document.createElement(
@@ -885,7 +1050,7 @@ function criarCardFilme(
     );
 
 
-    // guardo o id pra sincronizar os outros cards do mesmo filme
+    // salva o id no botao pra sincronizar
     botaoFavorito.dataset.filmeId =
         filme.id;
 
@@ -933,7 +1098,7 @@ function criarCardFilme(
         "click",
         function (evento) {
 
-            // sem isso o clique no coracao tb abriria o modal
+            // impede o clique do coracao de abrir o modal
             evento.stopPropagation();
 
 
@@ -952,6 +1117,8 @@ function criarCardFilme(
     return card;
 }
 
+
+/* monta a grade da busca e dos favoritos */
 
 function mostrarFilmes(
     filmes
@@ -1030,7 +1197,9 @@ async function buscarFilmes() {
 
 
         const resposta =
-            await fetch(url);
+            await fetch(
+                url
+            );
 
 
         if (!resposta.ok) {
@@ -1078,7 +1247,11 @@ async function carregarDetalhesFilme(
 
 
     detalhesFilme.innerHTML =
-        '<p class="mensagem_modal">Carregando detalhes...</p>';
+        `
+        <p class="mensagem_modal">
+            Carregando detalhes...
+        </p>
+        `;
 
 
     try {
@@ -1088,7 +1261,9 @@ async function carregarDetalhesFilme(
 
 
         const resposta =
-            await fetch(url);
+            await fetch(
+                url
+            );
 
 
         if (!resposta.ok) {
@@ -1117,7 +1292,11 @@ async function carregarDetalhesFilme(
 
 
         detalhesFilme.innerHTML =
-            '<p class="mensagem_modal">Não foi possível carregar os detalhes do filme.</p>';
+            `
+            <p class="mensagem_modal">
+                Não foi possível carregar os detalhes do filme.
+            </p>
+            `;
     }
 }
 
@@ -1138,6 +1317,8 @@ function mostrarDetalhesFilme(
         "";
 
 
+    /* botoes */
+
     const acoes =
         document.createElement(
             "div"
@@ -1148,6 +1329,8 @@ function mostrarDetalhesFilme(
         "acoes_filme"
     );
 
+
+    /* favorito do modal */
 
     const botaoFavorito =
         document.createElement(
@@ -1187,6 +1370,8 @@ function mostrarDetalhesFilme(
     );
 
 
+    /* trailer */
+
     const botaoTrailer =
         document.createElement(
             "button"
@@ -1222,6 +1407,8 @@ function mostrarDetalhesFilme(
     );
 
 
+    /* player local caso exista */
+
     if (
         typeof window.criarBotaoPlayerLocal ===
         "function"
@@ -1242,6 +1429,8 @@ function mostrarDetalhesFilme(
     }
 
 
+    /* fundo do modal */
+
     const backdrop =
         document.createElement(
             "div"
@@ -1260,6 +1449,8 @@ function mostrarDetalhesFilme(
     }
 
 
+    /* layout */
+
     const layout =
         document.createElement(
             "div"
@@ -1270,6 +1461,8 @@ function mostrarDetalhesFilme(
         "detalhes_layout"
     );
 
+
+    /* poster */
 
     const poster =
         document.createElement(
@@ -1292,6 +1485,8 @@ function mostrarDetalhesFilme(
     poster.alt =
         `Pôster de ${filme.title}`;
 
+
+    /* informacoes */
 
     const info =
         document.createElement(
@@ -1401,6 +1596,8 @@ function mostrarDetalhesFilme(
     );
 
 
+    /* generos */
+
     const generos =
         document.createElement(
             "div"
@@ -1437,6 +1634,8 @@ function mostrarDetalhesFilme(
     );
 
 
+    /* sinopse */
+
     const tituloSinopse =
         document.createElement(
             "h3"
@@ -1467,6 +1666,8 @@ function mostrarDetalhesFilme(
         filme.overview ||
         "Sinopse não disponível para este filme.";
 
+
+    /* monta as informacoes */
 
     info.appendChild(
         titulo
@@ -1542,7 +1743,9 @@ async function abrirTrailerPorId(
 
 
         const resposta =
-            await fetch(url);
+            await fetch(
+                url
+            );
 
 
         if (!resposta.ok) {
@@ -1576,6 +1779,8 @@ async function abrirTrailerPorId(
 }
 
 
+/* procura trailer oficial primeiro */
+
 function encontrarTrailer(
     filme
 ) {
@@ -1590,6 +1795,7 @@ function encontrarTrailer(
             function (video) {
 
                 return (
+
                     video.site ===
                         "YouTube" &&
 
@@ -1598,6 +1804,7 @@ function encontrarTrailer(
 
                     video.official ===
                         true
+
                 );
             }
         );
@@ -1609,16 +1816,20 @@ function encontrarTrailer(
     }
 
 
+    /* se nao tiver oficial pega qualquer trailer */
+
     const trailer =
         videos.find(
             function (video) {
 
                 return (
+
                     video.site ===
                         "YouTube" &&
 
                     video.type ===
                         "Trailer"
+
                 );
             }
         );
@@ -1630,22 +1841,29 @@ function encontrarTrailer(
     }
 
 
+    /* ultima tentativa eh teaser */
+
     const teaser =
         videos.find(
             function (video) {
 
                 return (
+
                     video.site ===
                         "YouTube" &&
 
                     video.type ===
                         "Teaser"
+
                 );
             }
         );
 
 
-    return teaser || null;
+    return (
+        teaser ||
+        null
+    );
 }
 
 
@@ -1792,6 +2010,8 @@ function abrirTrailer(
     );
 }
 
+
+/* fecha modal e mata qualquer video aberto */
 
 function fecharModalFilme() {
 

@@ -1045,8 +1045,8 @@ function criarCardFilme(
         Number.isFinite(
             notaValor
         )
-            ? `⭐ ${notaValor.toFixed(1)}`
-            : "⭐ —";
+            ? `★ ${notaValor.toFixed(1)}`
+            : "★ —";
 
 
     conteudo.appendChild(
@@ -1603,7 +1603,7 @@ function mostrarDetalhesFilme(
         Number.isFinite(
             nota
         )
-            ? `⭐ ${nota.toFixed(1)}`
+            ? `★ ${nota.toFixed(1)}`
             : "Sem avaliação";
 
 
@@ -2244,8 +2244,8 @@ function mostrarDestaque(
         Number.isFinite(
             nota
         )
-            ? `⭐ ${nota.toFixed(1)}`
-            : "⭐ —";
+            ? `★ ${nota.toFixed(1)}`
+            : "★ —";
 
 
     destaqueAno.textContent =

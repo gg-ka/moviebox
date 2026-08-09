@@ -188,7 +188,7 @@ Durante o desenvolvimento do MovieBox, trabalhei conceitos como:
 
 ## 🌐 Deploy
 
-> Link da aplicação será adicionado em breve.
+> [Acessar MovieBox](https://moviebox-lake-zeta.vercel.app/)
 
 ## 📌 Status do projeto
 

@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,27 +8,20 @@
 
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
     <header class="cabecalho">
-
         <h1>MovieBox</h1>
 
         <nav>
-            <a href="#">Início</a>
-            <a href="#">Favoritos</a>
+            <a href="#" id="link_inicio">Início</a>
+            <a href="#" id="link_favoritos">Favoritos</a>
         </nav>
-
     </header>
 
-
     <main>
-
         <section class="hero">
-
             <div class="hero_conteudo">
-
                 <h2>Encontre seu próximo filme</h2>
 
                 <p>
@@ -38,7 +29,6 @@
                 </p>
 
                 <div class="busca">
-
                     <input
                         type="text"
                         id="campo_busca"
@@ -51,48 +41,36 @@
                     >
                         Pesquisar
                     </button>
-
                 </div>
-
             </div>
-
         </section>
 
-
         <section class="filmes">
-
-            <h2>Filmes populares</h2>
+            <h2 id="titulo_secao">Filmes populares</h2>
 
             <div
                 class="lista_filmes"
                 id="lista_filmes"
             ></div>
-
         </section>
-
     </main>
 
     <div class="modal" id="modal">
-
         <div class="modal_conteudo">
-
             <button
                 type="button"
                 class="fechar_modal"
                 id="fechar_modal"
+                aria-label="Fechar detalhes do filme"
             >
                 ×
             </button>
 
             <div id="detalhes_filme"></div>
-
         </div>
-
     </div>
 
     <script src="config.js"></script>
     <script src="script.js"></script>
-
 </body>
-
 </html>

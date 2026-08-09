@@ -1139,6 +1139,23 @@ input {
     border-color: rgba(229, 9, 20, 0.35);
 }
 
+#destaque_trailer {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+}
+
+#destaque_trailer::before {
+    content: "";
+
+    width: 0;
+    height: 0;
+
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 11px solid currentColor;
+}
+
 /* RESPONSIVIDADE */
 
 @media (max-width: 1250px) {

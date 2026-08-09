@@ -1442,7 +1442,8 @@ function mostrarDetalhesFilme(
 
 
     botaoTrailer.classList.add(
-        "botao_assistir"
+        "botao_assistir",
+        "botao_trailer_modal"
     );
 
 

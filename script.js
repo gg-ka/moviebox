@@ -836,8 +836,11 @@ function alternarFavorito(
     */
 
     if (
+        !resultadosView.classList.contains(
+            "oculto"
+        ) &&
         tituloSecao.textContent ===
-        "Meus favoritos"
+            "Meus favoritos"
     ) {
 
         mostrarFavoritos();
@@ -1444,7 +1447,7 @@ function mostrarDetalhesFilme(
 
 
     botaoTrailer.textContent =
-        "▶ Assistir trailer";
+        "\u25B6\uFE0E Assistir trailer";
 
 
     botaoTrailer.addEventListener(

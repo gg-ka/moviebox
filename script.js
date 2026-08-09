@@ -8,6 +8,17 @@ const detalhesFilme = document.querySelector("#detalhes_filme");
 const linkInicio = document.querySelector("#link_inicio");
 const linkFavoritos = document.querySelector("#link_favoritos");
 const tituloSecao = document.querySelector("#titulo_secao");
+const destaque = document.querySelector("#destaque");
+const destaqueTitulo = document.querySelector("#destaque_titulo");
+const destaqueAno = document.querySelector("#destaque_ano");
+const destaqueNota = document.querySelector("#destaque_nota");
+const destaqueSinopse = document.querySelector("#destaque_sinopse");
+const destaqueTrailer = document.querySelector("#destaque_trailer");
+const destaqueDetalhes = document.querySelector("#destaque_detalhes");
+const URL_BACKDROP = "https://image.tmdb.org/t/p/w1280";
+
+
+let filmeDestaqueAtual = null;
 
 /* . = classe
    # = id */
@@ -125,6 +136,7 @@ async function carregarFilmesPopulares() {
         }
 
         const dados = await resposta.json();
+        mostrarDestaque(dados.results);
         mostrarFilmes(dados.results);
 
     } catch (erro) {
@@ -195,6 +207,10 @@ async function buscarFilmes() {
         return;
     }
 
+    destaque.classList.add(
+        "destaque_oculto"
+    );
+
     tituloSecao.textContent = `Resultados para "${termo}"`;
     mostrarMensagem("Buscando filmes...");
 
@@ -251,17 +267,6 @@ function mostrarDetalhesFilme(filme) {
     const acoes = document.createElement("div");
     acoes.classList.add("acoes_filme");
 
-    const botaoTrailer = document.createElement("button");
-    botaoTrailer.type = "button";
-    botaoTrailer.classList.add("botao_assistir");
-    botaoTrailer.textContent = "▶ Assistir trailer";
-
-    botaoTrailer.addEventListener("click", function () {
-        abrirTrailer(filme);
-    });
-
-    acoes.appendChild(botaoTrailer);
-
     const botaoFavorito = document.createElement("button");
     botaoFavorito.type = "button";
     botaoFavorito.classList.add("botao_favorito_icone");
@@ -273,6 +278,17 @@ function mostrarDetalhesFilme(filme) {
     });
 
     acoes.appendChild(botaoFavorito);
+
+    const botaoTrailer = document.createElement("button");
+    botaoTrailer.type = "button";
+    botaoTrailer.classList.add("botao_assistir");
+    botaoTrailer.textContent = "▶ Assistir trailer";
+
+    botaoTrailer.addEventListener("click", function () {
+        abrirTrailer(filme);
+    });
+
+    acoes.appendChild(botaoTrailer);
 
     if (typeof window.criarBotaoPlayerLocal === "function") {
         const botaoLocal = window.criarBotaoPlayerLocal(filme);
@@ -371,7 +387,72 @@ function mostrarDetalhesFilme(filme) {
     detalhesFilme.appendChild(layout);
 }
 
+async function abrirTrailerPorId(id) {
+
+    abrirModal();
+
+    detalhesFilme.innerHTML =
+        "<p>Carregando trailer...</p>";
+
+
+    try {
+
+        const url =
+            `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR&append_to_response=videos`;
+
+
+        const resposta =
+            await fetch(url);
+
+
+        if (!resposta.ok) {
+
+            throw new Error(
+                "Não foi possível carregar o trailer."
+            );
+
+        }
+
+
+        const filme =
+            await resposta.json();
+
+
+        abrirTrailer(filme);
+
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao carregar trailer:",
+            erro
+        );
+
+
+        detalhesFilme.innerHTML =
+            "<p>Não foi possível carregar o trailer.</p>";
+
+    }
+
+}
+
+destaqueTrailer.addEventListener(
+    "click",
+    function () {
+
+        if (!filmeDestaqueAtual) {
+            return;
+        }
+
+        abrirTrailerPorId(
+            filmeDestaqueAtual.id
+        );
+
+    }
+);
+
 function mostrarFavoritos() {
+    destaque.classList.add("destaque_oculto");
     tituloSecao.textContent = "Meus favoritos";
 
     if (favoritos.length === 0) {
@@ -491,6 +572,7 @@ function fecharModalFilme() {
 
 function mostrarInicio() {
     campoBusca.value = "";
+    destaque.classList.remove("destaque_oculto");
     tituloSecao.textContent = "Filmes populares";
     carregarFilmesPopulares();
 }
@@ -526,4 +608,56 @@ document.addEventListener("keydown", function (event) {
     }
 });
 
+function mostrarDestaque(filmes) {
+    const candidatos = (filmes || []).filter(function (filme) {
+        return filme.backdrop_path && filme.overview;
+    });
+
+    if (candidatos.length === 0) {
+        destaqueTitulo.textContent = "Descubra seu próximo filme";
+        destaqueAno.textContent = "";
+        destaqueNota.textContent = "";
+        destaqueSinopse.textContent =
+            "Explore o catálogo e encontre algo novo para assistir.";
+        return;
+    }
+
+    const filme = candidatos[0];
+    filmeDestaqueAtual = filme;
+
+    destaque.style.backgroundImage =
+        `url(${URL_BACKDROP}${filme.backdrop_path})`;
+
+    destaqueTitulo.textContent = filme.title;
+
+    const nota = Number(filme.vote_average);
+    destaqueNota.textContent = Number.isFinite(nota)
+        ? `⭐ ${nota.toFixed(1)}`
+        : "⭐ —";
+
+    destaqueAno.textContent = filme.release_date
+        ? filme.release_date.slice(0, 4)
+        : "Ano não informado";
+
+    destaqueSinopse.textContent =
+        filme.overview.length > 220
+            ? filme.overview.slice(0, 220) + "..."
+            : filme.overview;
+}
+
 carregarFilmesPopulares();
+
+destaqueDetalhes.addEventListener(
+    "click",
+    function () {
+
+        if (!filmeDestaqueAtual) {
+            return;
+        }
+
+        carregarDetalhesFilme(
+            filmeDestaqueAtual.id
+        );
+
+    }
+);

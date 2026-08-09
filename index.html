@@ -11,42 +11,77 @@
 <body>
 
     <header class="cabecalho">
-        <h1>MovieBox</h1>
+        <h1 class="logo">MovieBox</h1>
 
         <nav>
             <a href="#" id="link_inicio">Início</a>
             <a href="#" id="link_favoritos">Favoritos</a>
         </nav>
+
+        <div class="busca_topo">
+            <input
+                type="text"
+                id="campo_busca"
+                placeholder="Pesquisar filmes..."
+                aria-label="Pesquisar filmes"
+            >
+
+            <button
+                type="button"
+                id="botao_busca"
+                aria-label="Pesquisar"
+                title="Pesquisar"
+            >
+                🔍
+            </button>
+        </div>
     </header>
 
     <main>
-        <section class="hero">
-            <div class="hero_conteudo">
-                <h2>Encontre seu próximo filme</h2>
+        <section class="destaque" id="destaque">
+            <div class="destaque_conteudo">
+                <span class="destaque_selo">FILME EM DESTAQUE</span>
 
-                <p>
-                    Pesquise filmes e descubra novas histórias para assistir.
-                </p>
+                <h2 id="destaque_titulo">Carregando destaque...</h2>
 
-                <div class="busca">
-                    <input
-                        type="text"
-                        id="campo_busca"
-                        placeholder="Pesquisar filme..."
+                <div class="destaque_meta">
+                    <span id="destaque_ano"></span>
+                    <span class="separador_meta">•</span>
+                    <span id="destaque_nota"></span>
+                </div>
+
+                <p
+                    class="destaque_sinopse"
+                    id="destaque_sinopse"
+                ></p>
+
+                <div class="destaque_acoes">
+                    <button
+                        type="button"
+                        class="destaque_botao destaque_botao_principal"
+                        id="destaque_trailer"
                     >
+                        ▶ Assistir trailer
+                    </button>
 
                     <button
                         type="button"
-                        id="botao_busca"
+                        class="destaque_botao destaque_botao_secundario"
+                        id="destaque_detalhes"
                     >
-                        Pesquisar
+                        ⓘ Ver detalhes
                     </button>
                 </div>
             </div>
         </section>
 
         <section class="filmes">
-            <h2 id="titulo_secao">Filmes populares</h2>
+            <div class="secao_cabecalho">
+                <div>
+                    <span class="secao_selo">CATÁLOGO</span>
+                    <h2 id="titulo_secao">Filmes populares</h2>
+                </div>
+            </div>
 
             <div
                 class="lista_filmes"

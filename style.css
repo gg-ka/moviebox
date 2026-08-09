@@ -414,6 +414,24 @@ body {
         justify-content: center;
     }
 
+    .player_container {
+        padding: 16px;
+    }
+
+    .player_topo {
+        align-items: flex-start;
+        flex-direction: column;
+
+    gap: 12px;
+    }
+
+    .player_topo h2 {
+        font-size: 18px;
+    }
+
+    .botao_voltar {
+        font-size: 14px;
+    }
 }
 
 /* celualr menor ainda */
@@ -513,4 +531,93 @@ body {
     color: #cccccc;
 
     line-height: 1.6;
+}
+
+/* assistir */
+
+.botao_assistir {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 26px;
+
+    padding: 12px 20px;
+
+    border: none;
+    border-radius: 10px;
+
+    background-color: #e50914;
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.botao_assistir:hover {
+    background-color: #b20710;
+
+    transform: translateY(-2px);
+}
+
+.player_container {
+    padding: 30px;
+}
+
+.player_topo {
+    display: flex;
+    align-items: center;
+
+    gap: 20px;
+
+    margin-bottom: 20px;
+}
+
+.player_topo h2 {
+    font-size: 22px;
+    padding-top: 20px;
+}
+
+.botao_voltar {
+    padding: 9px 15px;
+
+    border: 1px solid #3a3a3a;
+    border-radius: 8px;
+
+    background-color: #222222;
+    color: #ffffff;
+
+    cursor: pointer;
+}
+
+.botao_voltar:hover {
+    background-color: #333333;
+}
+
+.player_filme {
+    display: block;
+
+    width: 100%;
+
+    aspect-ratio: 16 / 9;
+
+    border: none;
+    border-radius: 14px;
+
+    background-color: #000000;
+}
+
+.acoes_filme {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-bottom: 26px;
 }

@@ -9,6 +9,47 @@ const detalhesFilme = document.querySelector("#detalhes_filme");
 /* . = classe
 # = id */
 
+function carregarPlayerLocal() {
+
+    if (
+        typeof LOCAL_PLAYER_ENABLED === "undefined" ||
+        LOCAL_PLAYER_ENABLED === false
+    ) {
+        return;
+    }
+
+
+    const script =
+        document.createElement("script");
+
+    script.src = "player.local.js";
+
+
+    script.addEventListener("load", function () {
+
+        console.log(
+            "Player local carregado."
+        );
+
+    });
+
+
+    script.addEventListener("error", function () {
+
+        console.warn(
+            "Player local não encontrado."
+        );
+
+    });
+
+
+    document.head.appendChild(script);
+
+}
+
+
+carregarPlayerLocal();
+
 function mostrarMensagem(texto) {
     listaFilmes.innerHTML = "";
 
@@ -140,8 +181,7 @@ async function carregarDetalhesFilme(id) {
     try {
 
         const url =
-            `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR`;
-
+            `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR&append_to_response=videos`;
         const resposta = await fetch(url);
 
         if (!resposta.ok) {
@@ -174,8 +214,39 @@ function mostrarDetalhesFilme(filme) {
 
     detalhesFilme.innerHTML = "";
 
+    const acoes = document.createElement("div");
 
-    // BACKDROP
+    acoes.classList.add("acoes_filme");
+
+
+    const botaoTrailer = document.createElement("button");
+
+    botaoTrailer.classList.add("botao_assistir");
+
+    botaoTrailer.textContent = "▶ Assistir trailer";
+
+
+    botaoTrailer.addEventListener("click", function () {
+
+        abrirTrailer(filme);
+
+    });
+
+
+    acoes.appendChild(botaoTrailer);
+
+    if (
+    typeof window.criarBotaoPlayerLocal === "function"
+    ) {
+
+        const botaoLocal =
+            window.criarBotaoPlayerLocal(filme);
+
+        acoes.appendChild(botaoLocal);
+
+}
+
+    // fundo
 
     const backdrop = document.createElement("div");
 
@@ -307,6 +378,7 @@ function mostrarDetalhesFilme(filme) {
     info.appendChild(titulo);
     info.appendChild(meta);
     info.appendChild(generos);
+    info.appendChild(acoes);
     info.appendChild(tituloSinopse);
     info.appendChild(sinopse);
 
@@ -329,6 +401,169 @@ function formatarDuracao(minutos) {
     return `${horas}h ${minutosRestantes}min`;
 }
 
+function encontrarTrailer(filme) {
+
+    const videos = filme.videos?.results || [];
+
+    const trailerOficial = videos.find(function (video) {
+
+        return (
+            video.site === "YouTube" &&
+            video.type === "Trailer" &&
+            video.official === true
+        );
+
+    });
+
+
+    if (trailerOficial) {
+        return trailerOficial;
+    }
+
+
+    const trailer = videos.find(function (video) {
+
+        return (
+            video.site === "YouTube" &&
+            video.type === "Trailer"
+        );
+
+    });
+
+
+    if (trailer) {
+        return trailer;
+    }
+
+
+    const teaser = videos.find(function (video) {
+
+        return (
+            video.site === "YouTube" &&
+            video.type === "Teaser"
+        );
+
+    });
+
+
+    return teaser || null;
+}
+
+function abrirTrailer(filme) {
+
+    const trailer = encontrarTrailer(filme);
+
+
+    if (!trailer) {
+
+        alert("Nenhum trailer disponível para este filme.");
+
+        return;
+    }
+
+
+    detalhesFilme.innerHTML = "";
+
+
+    const playerContainer =
+        document.createElement("div");
+
+    playerContainer.classList.add(
+        "player_container"
+    );
+
+
+    const topoPlayer =
+        document.createElement("div");
+
+    topoPlayer.classList.add(
+        "player_topo"
+    );
+
+
+    const voltar =
+        document.createElement("button");
+
+    voltar.classList.add("botao_voltar");
+
+    voltar.textContent = "← Voltar";
+
+
+    const titulo =
+        document.createElement("h2");
+
+    titulo.textContent =
+        `Trailer — ${filme.title}`;
+
+
+    voltar.addEventListener("click", function () {
+
+        mostrarDetalhesFilme(filme);
+
+    });
+
+
+    topoPlayer.appendChild(voltar);
+    topoPlayer.appendChild(titulo);
+
+
+    const iframe =
+        document.createElement("iframe");
+
+    iframe.classList.add("player_filme");
+
+
+    iframe.src =
+        `https://www.youtube-nocookie.com/embed/${trailer.key}?autoplay=1`;
+
+
+    iframe.allowFullscreen = true;
+
+
+    iframe.setAttribute(
+        "allow",
+        "autoplay; encrypted-media; picture-in-picture; fullscreen"
+    );
+
+
+    iframe.setAttribute(
+        "referrerpolicy",
+        "strict-origin-when-cross-origin"
+    );
+
+
+    playerContainer.appendChild(topoPlayer);
+
+    playerContainer.appendChild(iframe);
+
+    detalhesFilme.appendChild(playerContainer);
+
+}
+
+function fecharModalFilme() {
+
+    const players = detalhesFilme.querySelectorAll("iframe");
+
+    players.forEach(function (player) {
+        player.src = "about:blank";
+        player.remove();
+    });
+
+    detalhesFilme.innerHTML = "";
+
+    modal.classList.remove("ativo");
+}
+
+fecharModal.addEventListener("click", fecharModalFilme);
+botaoBusca.addEventListener("click", buscarFilmes);
+campoBusca.addEventListener("keydown", function (event) {
+
+    if (event.key === "Enter") {
+        buscarFilmes();
+    }
+
+});
+
 modal.addEventListener("click", function (event) {
 
     if (event.target === modal) {
@@ -337,20 +572,11 @@ modal.addEventListener("click", function (event) {
 
 });
 
+
 document.addEventListener("keydown", function (event) {
 
     if (event.key === "Escape") {
         fecharModalFilme();
-    }
-
-});
-
-fecharModal.addEventListener("click", fecharModalFilme);
-botaoBusca.addEventListener("click", buscarFilmes);
-campoBusca.addEventListener("keydown", function (event) {
-
-    if (event.key === "Enter") {
-        buscarFilmes();
     }
 
 });

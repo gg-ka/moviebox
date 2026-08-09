@@ -1,1 +1,3 @@
 const API_KEY = "SUA_API_KEY_AQUI";
+
+const LOCAL_PLAYER_ENABLED = false;

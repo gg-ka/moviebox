@@ -16,12 +16,144 @@ const destaqueSinopse = document.querySelector("#destaque_sinopse");
 const destaqueTrailer = document.querySelector("#destaque_trailer");
 const destaqueDetalhes = document.querySelector("#destaque_detalhes");
 const URL_BACKDROP = "https://image.tmdb.org/t/p/w1280";
-
+const catalogoHome = document.querySelector("#catalogo_home");
+const resultadosView = document.querySelector("#resultados_view");
+const listaPopulares = document.querySelector("#lista_populares");
+const listaAvaliados = document.querySelector("#lista_avaliados");
+const listaCartaz = document.querySelector("#lista_cartaz");
+const listaLancamentos = document.querySelector("#lista_lancamentos");
 
 let filmeDestaqueAtual = null;
 
 /* . = classe
    # = id */
+
+function mostrarTelaHome() {
+
+    catalogoHome.classList.remove("oculto");
+    resultadosView.classList.add("oculto");
+
+    destaque.classList.remove("destaque_oculto");
+}
+
+
+function mostrarTelaResultados() {
+
+    catalogoHome.classList.add("oculto");
+    resultadosView.classList.remove("oculto");
+
+    destaque.classList.add("destaque_oculto");
+}
+
+function mostrarCarrossel(filmes, container) {
+
+    container.innerHTML = "";
+
+    filmes.forEach(function (filme) {
+
+        const card = criarCardFilme(filme);
+
+        card.classList.add("card_carrossel");
+
+        container.appendChild(card);
+    });
+}
+
+async function buscarCategoria(endpoint) {
+
+    const url =
+        `https://api.themoviedb.org/3${endpoint}?api_key=${API_KEY}&language=pt-BR&region=BR`;
+
+    const resposta = await fetch(url);
+
+    if (!resposta.ok) {
+        throw new Error(
+            `Não foi possível carregar ${endpoint}`
+        );
+    }
+
+    const dados = await resposta.json();
+
+    return dados.results;
+}
+
+function filtrarProximosLancamentos(filmes) {
+
+    const hoje = new Date();
+
+    return filmes.filter(function (filme) {
+
+        if (!filme.release_date) {
+            return false;
+        }
+
+        const dataLancamento =
+            new Date(filme.release_date + "T00:00:00");
+
+        return dataLancamento > hoje;
+    });
+}
+
+async function carregarHome() {
+
+    mostrarTelaHome();
+
+    try {
+
+        const [
+            populares,
+            avaliados,
+            cartaz,
+            lancamentos
+        ] = await Promise.all([
+
+            buscarCategoria("/movie/popular"),
+
+            buscarCategoria("/movie/top_rated"),
+
+            buscarCategoria("/movie/now_playing"),
+
+            buscarCategoria("/movie/upcoming")
+
+        ]);
+
+
+        mostrarDestaque(populares);
+
+
+        mostrarCarrossel(
+            populares,
+            listaPopulares
+        );
+
+
+        mostrarCarrossel(
+            avaliados,
+            listaAvaliados
+        );
+
+
+        mostrarCarrossel(
+            cartaz,
+            listaCartaz
+        );
+
+        const proximosLancamentos = filtrarProximosLancamentos(lancamentos);
+        
+        mostrarCarrossel(
+            proximosLancamentos,
+            listaLancamentos
+        );
+
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao carregar a home:",
+            erro
+        );
+    }
+}
 
 function carregarFavoritosSalvos() {
     try {
@@ -207,9 +339,7 @@ async function buscarFilmes() {
         return;
     }
 
-    destaque.classList.add(
-        "destaque_oculto"
-    );
+    mostrarTelaResultados();
 
     tituloSecao.textContent = `Resultados para "${termo}"`;
     mostrarMensagem("Buscando filmes...");
@@ -452,15 +582,22 @@ destaqueTrailer.addEventListener(
 );
 
 function mostrarFavoritos() {
-    destaque.classList.add("destaque_oculto");
-    tituloSecao.textContent = "Meus favoritos";
+
+    mostrarTelaResultados();
+
+    tituloSecao.textContent =
+        "Meus favoritos";
+
 
     if (favoritos.length === 0) {
+
         mostrarMensagem(
             "Você ainda não adicionou nenhum filme aos favoritos."
         );
+
         return;
     }
+
 
     mostrarFilmes(favoritos);
 }
@@ -572,9 +709,7 @@ function fecharModalFilme() {
 
 function mostrarInicio() {
     campoBusca.value = "";
-    destaque.classList.remove("destaque_oculto");
-    tituloSecao.textContent = "Filmes populares";
-    carregarFilmesPopulares();
+    carregarHome();
 }
 
 linkInicio.addEventListener("click", function (event) {
@@ -645,7 +780,7 @@ function mostrarDestaque(filmes) {
             : filme.overview;
 }
 
-carregarFilmesPopulares();
+carregarHome();
 
 destaqueDetalhes.addEventListener(
     "click",

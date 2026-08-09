@@ -1,24 +1,56 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>MovieBox</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 </head>
+
+
 <body>
 
+    <!-- CABEÇALHO -->
+
     <header class="cabecalho">
-        <h1 class="logo">MovieBox</h1>
+
+        <h1 class="logo">
+            MovieBox
+        </h1>
+
 
         <nav>
-            <a href="#" id="link_inicio">Início</a>
-            <a href="#" id="link_favoritos">Favoritos</a>
+
+            <a
+                href="#"
+                id="link_inicio"
+            >
+                Início
+            </a>
+
+            <a
+                href="#"
+                id="link_favoritos"
+            >
+                Favoritos
+            </a>
+
         </nav>
 
+
         <div class="busca_topo">
+
             <input
                 type="text"
                 id="campo_busca"
@@ -34,64 +66,232 @@
             >
                 🔍
             </button>
+
         </div>
+
     </header>
 
-    <main>
-        <section class="destaque" id="destaque">
-            <div class="destaque_conteudo">
-                <span class="destaque_selo">FILME EM DESTAQUE</span>
 
-                <h2 id="destaque_titulo">Carregando destaque...</h2>
+    <main>
+
+        <!-- FILME EM DESTAQUE -->
+
+        <section
+            class="destaque"
+            id="destaque"
+        >
+
+            <div class="destaque_conteudo">
+
+                <span class="destaque_selo">
+                    FILME EM DESTAQUE
+                </span>
+
+
+                <h2 id="destaque_titulo">
+                    Carregando destaque...
+                </h2>
+
 
                 <div class="destaque_meta">
+
                     <span id="destaque_ano"></span>
-                    <span class="separador_meta">•</span>
+
+                    <span class="separador_meta">
+                        •
+                    </span>
+
                     <span id="destaque_nota"></span>
+
                 </div>
+
 
                 <p
                     class="destaque_sinopse"
                     id="destaque_sinopse"
                 ></p>
 
+
                 <div class="destaque_acoes">
+
                     <button
                         type="button"
-                        class="destaque_botao destaque_botao_principal"
+                        class="
+                            destaque_botao
+                            destaque_botao_principal
+                        "
                         id="destaque_trailer"
                     >
                         ▶ Assistir trailer
                     </button>
 
+
                     <button
                         type="button"
-                        class="destaque_botao destaque_botao_secundario"
+                        class="
+                            destaque_botao
+                            destaque_botao_secundario
+                        "
                         id="destaque_detalhes"
                     >
                         ⓘ Ver detalhes
                     </button>
+
                 </div>
+
             </div>
+
         </section>
 
-        <section class="filmes">
-            <div class="secao_cabecalho">
-                <div>
-                    <span class="secao_selo">CATÁLOGO</span>
-                    <h2 id="titulo_secao">Filmes populares</h2>
+
+        <!-- CATÁLOGO DA HOME -->
+
+        <section
+            class="catalogo_home"
+            id="catalogo_home"
+        >
+
+            <!-- POPULARES -->
+
+            <section class="categoria">
+
+                <div class="secao_cabecalho">
+
+                    <div>
+
+                        <span class="secao_selo">
+                            CATÁLOGO
+                        </span>
+
+                        <h2>
+                            Filmes populares
+                        </h2>
+
+                    </div>
+
                 </div>
+
+
+                <div
+                    class="carrossel_filmes"
+                    id="lista_populares"
+                ></div>
+
+            </section>
+
+
+            <!-- MAIS BEM AVALIADOS -->
+
+            <section class="categoria">
+
+                <div class="categoria_topo">
+
+                    <h2>
+                        Mais bem avaliados
+                    </h2>
+
+                </div>
+
+
+                <div
+                    class="carrossel_filmes"
+                    id="lista_avaliados"
+                ></div>
+
+            </section>
+
+
+            <!-- EM CARTAZ -->
+
+            <section class="categoria">
+
+                <div class="categoria_topo">
+
+                    <h2>
+                        Em cartaz
+                    </h2>
+
+                </div>
+
+
+                <div
+                    class="carrossel_filmes"
+                    id="lista_cartaz"
+                ></div>
+
+            </section>
+
+
+            <!-- PRÓXIMOS LANÇAMENTOS -->
+
+            <section class="categoria">
+
+                <div class="categoria_topo">
+
+                    <h2>
+                        Próximos lançamentos
+                    </h2>
+
+                </div>
+
+
+                <div
+                    class="carrossel_filmes"
+                    id="lista_lancamentos"
+                ></div>
+
+            </section>
+
+        </section>
+
+
+        <!-- PESQUISA / FAVORITOS -->
+
+        <section
+            class="filmes resultados_view oculto"
+            id="resultados_view"
+        >
+
+            <div class="secao_cabecalho">
+
+                <div>
+
+                    <span
+                        class="secao_selo"
+                        id="selo_resultados"
+                    >
+                        CATÁLOGO
+                    </span>
+
+
+                    <h2 id="titulo_secao">
+                        Resultados
+                    </h2>
+
+                </div>
+
             </div>
+
 
             <div
                 class="lista_filmes"
                 id="lista_filmes"
             ></div>
+
         </section>
+
     </main>
 
-    <div class="modal" id="modal">
+
+    <!-- MODAL DE DETALHES -->
+
+    <div
+        class="modal"
+        id="modal"
+    >
+
         <div class="modal_conteudo">
+
             <button
                 type="button"
                 class="fechar_modal"
@@ -101,11 +301,20 @@
                 ×
             </button>
 
+
             <div id="detalhes_filme"></div>
+
         </div>
+
     </div>
 
+
+    <!-- JAVASCRIPT -->
+
     <script src="config.js"></script>
+
     <script src="script.js"></script>
+
 </body>
+
 </html>

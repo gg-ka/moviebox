@@ -98,6 +98,16 @@ input {
     width: 100%;
 }
 
+/* link da pagina que esta aberta */
+
+.cabecalho a.ativo {
+    color: #ffffff;
+}
+
+.cabecalho a.ativo::after {
+    width: 100%;
+}
+
 /* BUSCA DO TOPO */
 
 .busca_topo {
@@ -339,7 +349,7 @@ input {
     padding: 0 28px 90px;
 }
 
-.destaque_oculto + .filmes {
+.destaque_oculto ~ .filmes {
     margin-top: 0;
     padding-top: 125px;
 }
@@ -959,6 +969,72 @@ input {
     pointer-events: none;
 }
 
+/* FAVORITO NO CARD */
+
+.favorito_card {
+    position: absolute;
+
+    top: 10px;
+    right: 10px;
+
+    z-index: 8;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 36px;
+    height: 36px;
+
+    padding: 0;
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+
+    background: rgba(15, 15, 16, 0.78);
+    backdrop-filter: blur(8px);
+
+    color: #b5b5b8;
+
+    font-size: 19px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    opacity: 0;
+
+    transform: scale(0.92);
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+
+.card_filme:hover .favorito_card,
+.favorito_card_ativo {
+    opacity: 1;
+    transform: scale(1);
+}
+
+
+.favorito_card:hover {
+    background: rgba(35, 35, 37, 0.95);
+
+    transform: scale(1.08);
+}
+
+
+.favorito_card.favorito_card_ativo {
+    color: var(--vermelho);
+
+    background: rgba(229, 9, 20, 0.15);
+
+    border-color: rgba(229, 9, 20, 0.35);
+}
+
 /* RESPONSIVIDADE */
 
 @media (max-width: 1250px) {
@@ -1046,7 +1122,7 @@ input {
         padding: 0 20px 70px;
     }
 
-    .destaque_oculto + .filmes {
+    .destaque_oculto ~ .filmes {
         margin-top: 0;
         padding-top: 155px;
     }
@@ -1106,6 +1182,13 @@ input {
         display: none;
     }
 
+    .favorito_card {
+        opacity: 1;
+        transform: scale(1);
+
+        width: 34px;
+        height: 34px;
+    }
 }
 
 @media (max-width: 600px) {

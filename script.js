@@ -2,69 +2,31 @@ const campoBusca = document.querySelector("#campo_busca");
 const botaoBusca = document.querySelector("#botao_busca");
 const listaFilmes = document.querySelector("#lista_filmes");
 
-const URL_IMAGEM =
-    "https://image.tmdb.org/t/p/w500";
+const modal = document.querySelector("#modal");
+const fecharModal = document.querySelector("#fechar_modal");
+const detalhesFilme = document.querySelector("#detalhes_filme");
 
-const modal =
-    document.querySelector("#modal");
+const linkInicio = document.querySelector("#link_inicio");
+const linkFavoritos = document.querySelector("#link_favoritos");
+const tituloSecao = document.querySelector("#titulo_secao");
 
-const fecharModal =
-    document.querySelector("#fechar_modal");
+const destaque = document.querySelector("#destaque");
+const destaqueTitulo = document.querySelector("#destaque_titulo");
+const destaqueAno = document.querySelector("#destaque_ano");
+const destaqueNota = document.querySelector("#destaque_nota");
+const destaqueSinopse = document.querySelector("#destaque_sinopse");
+const destaqueTrailer = document.querySelector("#destaque_trailer");
+const destaqueDetalhes = document.querySelector("#destaque_detalhes");
 
-const detalhesFilme =
-    document.querySelector("#detalhes_filme");
+const catalogoHome = document.querySelector("#catalogo_home");
+const resultadosView = document.querySelector("#resultados_view");
+const listaPopulares = document.querySelector("#lista_populares");
+const listaAvaliados = document.querySelector("#lista_avaliados");
+const listaCartaz = document.querySelector("#lista_cartaz");
+const listaLancamentos = document.querySelector("#lista_lancamentos");
 
-const linkInicio =
-    document.querySelector("#link_inicio");
-
-const linkFavoritos =
-    document.querySelector("#link_favoritos");
-
-const tituloSecao =
-    document.querySelector("#titulo_secao");
-
-const destaque =
-    document.querySelector("#destaque");
-
-const destaqueTitulo =
-    document.querySelector("#destaque_titulo");
-
-const destaqueAno =
-    document.querySelector("#destaque_ano");
-
-const destaqueNota =
-    document.querySelector("#destaque_nota");
-
-const destaqueSinopse =
-    document.querySelector("#destaque_sinopse");
-
-const destaqueTrailer =
-    document.querySelector("#destaque_trailer");
-
-const destaqueDetalhes =
-    document.querySelector("#destaque_detalhes");
-
-const URL_BACKDROP =
-    "https://image.tmdb.org/t/p/w1280";
-
-const catalogoHome =
-    document.querySelector("#catalogo_home");
-
-const resultadosView =
-    document.querySelector("#resultados_view");
-
-const listaPopulares =
-    document.querySelector("#lista_populares");
-
-const listaAvaliados =
-    document.querySelector("#lista_avaliados");
-
-const listaCartaz =
-    document.querySelector("#lista_cartaz");
-
-const listaLancamentos =
-    document.querySelector("#lista_lancamentos");
-
+const URL_IMAGEM = "https://image.tmdb.org/t/p/w500";
+const URL_BACKDROP = "https://image.tmdb.org/t/p/w1280";
 
 let filmeDestaqueAtual = null;
 
@@ -73,6 +35,27 @@ let filmeDestaqueAtual = null;
     . = classe
     # = id
 */
+
+
+// marca no menu qual parte do site esta aberta
+function atualizarMenuAtivo(linkAtivo = null) {
+
+    linkInicio.classList.remove("ativo");
+    linkFavoritos.classList.remove("ativo");
+
+    linkInicio.removeAttribute("aria-current");
+    linkFavoritos.removeAttribute("aria-current");
+
+    if (linkAtivo) {
+
+        linkAtivo.classList.add("ativo");
+
+        linkAtivo.setAttribute(
+            "aria-current",
+            "page"
+        );
+    }
+}
 
 
 function mostrarTelaHome() {
@@ -87,6 +70,10 @@ function mostrarTelaHome() {
 
     destaque.classList.remove(
         "destaque_oculto"
+    );
+
+    atualizarMenuAtivo(
+        linkInicio
     );
 }
 
@@ -104,10 +91,16 @@ function mostrarTelaResultados() {
     destaque.classList.add(
         "destaque_oculto"
     );
+
+    // pesquisa nao eh inicio nem favoritos, entao nao marco nenhum
+    atualizarMenuAtivo();
 }
 
 
-/* monta os filmes dentro de cada fileira */
+/* =========================
+   HOME / CATEGORIAS
+========================= */
+
 
 function mostrarCarrossel(
     filmes,
@@ -117,18 +110,21 @@ function mostrarCarrossel(
     container.innerHTML = "";
 
 
-    filmes.forEach(function (filme) {
+    filmes.forEach(
+        function (filme) {
 
-        const card =
-            criarCardFilme(filme);
+            const card =
+                criarCardFilme(filme);
 
-        card.classList.add(
-            "card_carrossel"
-        );
+            card.classList.add(
+                "card_carrossel"
+            );
 
-        container.appendChild(card);
-
-    });
+            container.appendChild(
+                card
+            );
+        }
+    );
 
 
     container.scrollLeft = 0;
@@ -140,13 +136,10 @@ function mostrarCarrossel(
             atualizarBotoesCarrossel(
                 container
             );
-
         }
     );
 }
 
-
-/* busca qualquer categoria da tmdb */
 
 async function buscarCategoria(
     endpoint
@@ -165,7 +158,6 @@ async function buscarCategoria(
         throw new Error(
             `Não foi possível carregar ${endpoint}`
         );
-
     }
 
 
@@ -196,7 +188,6 @@ function filtrarProximosLancamentos(
             if (!filme.release_date) {
 
                 return false;
-
             }
 
 
@@ -208,13 +199,10 @@ function filtrarProximosLancamentos(
 
 
             return dataLancamento > hoje;
-
         }
     );
 }
 
-
-/* carrega tudo que aparece na home */
 
 async function carregarHome() {
 
@@ -290,12 +278,14 @@ async function carregarHome() {
             "Erro ao carregar a home:",
             erro
         );
-
     }
 }
 
 
-/* verifica onde o carrossel ta */
+/* =========================
+   CARROSSEIS
+========================= */
+
 
 function atualizarBotoesCarrossel(
     carrossel
@@ -310,7 +300,6 @@ function atualizarBotoesCarrossel(
     if (!container) {
 
         return;
-
     }
 
 
@@ -344,8 +333,6 @@ function atualizarBotoesCarrossel(
         estaNoFim;
 }
 
-
-/* configura as setinhas das fileiras */
 
 function configurarCarrosseis() {
 
@@ -392,9 +379,7 @@ function configurarCarrosseis() {
 
                         behavior:
                             "smooth"
-
                     });
-
                 }
             );
 
@@ -415,9 +400,7 @@ function configurarCarrosseis() {
 
                         behavior:
                             "smooth"
-
                     });
-
                 }
             );
 
@@ -429,10 +412,8 @@ function configurarCarrosseis() {
                     atualizarBotoesCarrossel(
                         carrossel
                     );
-
                 }
             );
-
         }
     );
 }
@@ -447,13 +428,11 @@ function carregarFavoritosSalvos() {
 
     try {
 
-        return (
-            JSON.parse(
-                localStorage.getItem(
-                    "moviebox_favoritos"
-                )
-            ) || []
-        );
+        return JSON.parse(
+            localStorage.getItem(
+                "moviebox_favoritos"
+            )
+        ) || [];
 
     } catch (erro) {
 
@@ -462,8 +441,8 @@ function carregarFavoritosSalvos() {
             erro
         );
 
-        return [];
 
+        return [];
     }
 }
 
@@ -489,15 +468,14 @@ function filmeEstaFavoritado(id) {
         function (filme) {
 
             return filme.id === id;
-
         }
     );
 }
 
 
 /*
-    atualiza todos os coracoes dos cards,
-    pq um filme pode aparecer em mais de uma fileira
+    atualiza todos os coracoes pq o mesmo filme pode
+    aparecer em mais de uma fileira
 */
 
 function atualizarCoracoesCards() {
@@ -550,13 +528,10 @@ function atualizarCoracoesCards() {
                 estaFavoritado
                     ? "Remover dos favoritos"
                     : "Adicionar aos favoritos";
-
         }
     );
 }
 
-
-/* atualiza o coracao que fica dentro do modal */
 
 function atualizarBotaoFavorito(
     botao,
@@ -564,7 +539,9 @@ function atualizarBotaoFavorito(
 ) {
 
     const estaFavoritado =
-        filmeEstaFavoritado(id);
+        filmeEstaFavoritado(
+            id
+        );
 
 
     botao.textContent =
@@ -601,8 +578,6 @@ function atualizarBotaoFavorito(
 }
 
 
-/* adiciona ou remove um filme dos favoritos */
-
 function alternarFavorito(
     filme,
     botao = null
@@ -616,7 +591,6 @@ function alternarFavorito(
                     favorito.id ===
                     filme.id
                 );
-
             }
         );
 
@@ -636,7 +610,6 @@ function alternarFavorito(
 
             vote_average:
                 filme.vote_average
-
         });
 
     } else {
@@ -645,38 +618,24 @@ function alternarFavorito(
             indice,
             1
         );
-
     }
 
 
     salvarFavoritos();
 
 
-    // deixa o mesmo filme certinho em qualquer fileira
-
     atualizarCoracoesCards();
 
 
-    /*
-        so atualiza esse botao direto
-        quando ele foi passado.
-        isso acontece no modal
-    */
-
+    // no modal eu passo o proprio botao pra atualizar ele tb
     if (botao) {
 
         atualizarBotaoFavorito(
             botao,
             filme.id
         );
-
     }
 
-
-    /*
-        se tirar um favorito dentro da propria
-        pagina de favoritos, atualiza a lista
-    */
 
     if (
         tituloSecao.textContent ===
@@ -684,7 +643,6 @@ function alternarFavorito(
     ) {
 
         mostrarFavoritos();
-
     }
 }
 
@@ -699,11 +657,11 @@ function carregarPlayerLocal() {
     if (
         typeof LOCAL_PLAYER_ENABLED ===
             "undefined" ||
-        LOCAL_PLAYER_ENABLED === false
+        LOCAL_PLAYER_ENABLED ===
+            false
     ) {
 
         return;
-
     }
 
 
@@ -724,7 +682,6 @@ function carregarPlayerLocal() {
             console.log(
                 "Player local carregado."
             );
-
         }
     );
 
@@ -736,7 +693,6 @@ function carregarPlayerLocal() {
             console.warn(
                 "Player local não encontrado."
             );
-
         }
     );
 
@@ -751,13 +707,16 @@ carregarPlayerLocal();
 
 
 /* =========================
-   MENSAGENS
+   MENSAGENS / CARDS
 ========================= */
 
 
-function mostrarMensagem(texto) {
+function mostrarMensagem(
+    texto
+) {
 
-    listaFilmes.innerHTML = "";
+    listaFilmes.innerHTML =
+        "";
 
 
     const mensagem =
@@ -781,73 +740,9 @@ function mostrarMensagem(texto) {
 }
 
 
-/*
-    essa funcao ficou do primeiro modelo da home.
-    deixei por enquanto caso eu queira reaproveitar
-*/
-
-async function carregarFilmesPopulares() {
-
-    mostrarMensagem(
-        "Carregando filmes..."
-    );
-
-
-    try {
-
-        const url =
-            `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=pt-BR`;
-
-
-        const resposta =
-            await fetch(url);
-
-
-        if (!resposta.ok) {
-
-            throw new Error(
-                "Não foi possível carregar os filmes."
-            );
-
-        }
-
-
-        const dados =
-            await resposta.json();
-
-
-        mostrarDestaque(
-            dados.results
-        );
-
-
-        mostrarFilmes(
-            dados.results
-        );
-
-
-    } catch (erro) {
-
-        console.error(
-            "Erro ao carregar filmes populares:",
-            erro
-        );
-
-
-        mostrarMensagem(
-            "Não foi possível carregar os filmes."
-        );
-
-    }
-}
-
-
-/* =========================
-   CARD
-========================= */
-
-
-function criarCardFilme(filme) {
+function criarCardFilme(
+    filme
+) {
 
     const card =
         document.createElement(
@@ -859,8 +754,6 @@ function criarCardFilme(filme) {
         "card_filme"
     );
 
-
-    /* capa */
 
     if (filme.poster_path) {
 
@@ -907,11 +800,8 @@ function criarCardFilme(filme) {
         card.appendChild(
             semCapa
         );
-
     }
 
-
-    /* texto */
 
     const conteudo =
         document.createElement(
@@ -969,8 +859,6 @@ function criarCardFilme(filme) {
     );
 
 
-    /* clicar no card abre os detalhes */
-
     card.addEventListener(
         "click",
         function () {
@@ -978,12 +866,9 @@ function criarCardFilme(filme) {
             carregarDetalhesFilme(
                 filme.id
             );
-
         }
     );
 
-
-    /* coracao do card */
 
     const botaoFavorito =
         document.createElement(
@@ -1000,87 +885,61 @@ function criarCardFilme(filme) {
     );
 
 
-    /*
-        guardo o id aqui pra achar outros
-        cards do mesmo filme dps
-    */
-
+    // guardo o id pra sincronizar os outros cards do mesmo filme
     botaoFavorito.dataset.filmeId =
         filme.id;
 
 
-    botaoFavorito.innerHTML =
+    botaoFavorito.textContent =
         "♥";
 
 
-    botaoFavorito.setAttribute(
-        "aria-label",
-        "Adicionar aos favoritos"
+    const jaFavoritado =
+        filmeEstaFavoritado(
+            filme.id
+        );
+
+
+    botaoFavorito.classList.toggle(
+        "favorito_card_ativo",
+        jaFavoritado
     );
 
 
     botaoFavorito.setAttribute(
         "aria-pressed",
-        "false"
+        String(
+            jaFavoritado
+        )
     );
 
 
-    const jaFavoritado =
-        favoritos.some(
-            function (favorito) {
+    botaoFavorito.setAttribute(
+        "aria-label",
 
-                return (
-                    favorito.id ===
-                    filme.id
-                );
-
-            }
-        );
+        jaFavoritado
+            ? "Remover dos favoritos"
+            : "Adicionar aos favoritos"
+    );
 
 
-    if (jaFavoritado) {
-
-        botaoFavorito.classList.add(
-            "favorito_card_ativo"
-        );
-
-
-        botaoFavorito.setAttribute(
-            "aria-label",
-            "Remover dos favoritos"
-        );
-
-
-        botaoFavorito.setAttribute(
-            "aria-pressed",
-            "true"
-        );
-
-    }
+    botaoFavorito.title =
+        jaFavoritado
+            ? "Remover dos favoritos"
+            : "Adicionar aos favoritos";
 
 
     botaoFavorito.addEventListener(
         "click",
         function (evento) {
 
-            /*
-                sem isso o clique no coracao
-                tb abriria o modal
-            */
-
+            // sem isso o clique no coracao tb abriria o modal
             evento.stopPropagation();
 
 
             alternarFavorito(
                 filme
             );
-
-
-            /*
-                alternarFavorito ja atualiza todos
-                os coracoes visiveis
-            */
-
         }
     );
 
@@ -1094,9 +953,9 @@ function criarCardFilme(filme) {
 }
 
 
-/* cria a grade usada na busca e nos favoritos */
-
-function mostrarFilmes(filmes) {
+function mostrarFilmes(
+    filmes
+) {
 
     listaFilmes.innerHTML =
         "";
@@ -1111,8 +970,8 @@ function mostrarFilmes(filmes) {
             "Nenhum filme encontrado."
         );
 
-        return;
 
+        return;
     }
 
 
@@ -1128,7 +987,6 @@ function mostrarFilmes(filmes) {
             listaFilmes.appendChild(
                 card
             );
-
         }
     );
 }
@@ -1150,7 +1008,6 @@ async function buscarFilmes() {
         mostrarInicio();
 
         return;
-
     }
 
 
@@ -1181,7 +1038,6 @@ async function buscarFilmes() {
             throw new Error(
                 "Não foi possível pesquisar os filmes."
             );
-
         }
 
 
@@ -1205,7 +1061,6 @@ async function buscarFilmes() {
         mostrarMensagem(
             "Não foi possível realizar a pesquisa."
         );
-
     }
 }
 
@@ -1223,7 +1078,7 @@ async function carregarDetalhesFilme(
 
 
     detalhesFilme.innerHTML =
-        "<p class=\"mensagem_modal\">Carregando detalhes...</p>";
+        '<p class="mensagem_modal">Carregando detalhes...</p>';
 
 
     try {
@@ -1241,7 +1096,6 @@ async function carregarDetalhesFilme(
             throw new Error(
                 "Não foi possível carregar os detalhes."
             );
-
         }
 
 
@@ -1263,8 +1117,7 @@ async function carregarDetalhesFilme(
 
 
         detalhesFilme.innerHTML =
-            "<p class=\"mensagem_modal\">Não foi possível carregar os detalhes do filme.</p>";
-
+            '<p class="mensagem_modal">Não foi possível carregar os detalhes do filme.</p>';
     }
 }
 
@@ -1285,8 +1138,6 @@ function mostrarDetalhesFilme(
         "";
 
 
-    /* botoes */
-
     const acoes =
         document.createElement(
             "div"
@@ -1297,8 +1148,6 @@ function mostrarDetalhesFilme(
         "acoes_filme"
     );
 
-
-    /* favorito do modal */
 
     const botaoFavorito =
         document.createElement(
@@ -1329,7 +1178,6 @@ function mostrarDetalhesFilme(
                 filme,
                 botaoFavorito
             );
-
         }
     );
 
@@ -1338,8 +1186,6 @@ function mostrarDetalhesFilme(
         botaoFavorito
     );
 
-
-    /* trailer */
 
     const botaoTrailer =
         document.createElement(
@@ -1367,7 +1213,6 @@ function mostrarDetalhesFilme(
             abrirTrailer(
                 filme
             );
-
         }
     );
 
@@ -1376,8 +1221,6 @@ function mostrarDetalhesFilme(
         botaoTrailer
     );
 
-
-    /* player local, caso esteja habilitado */
 
     if (
         typeof window.criarBotaoPlayerLocal ===
@@ -1395,12 +1238,9 @@ function mostrarDetalhesFilme(
             acoes.appendChild(
                 botaoLocal
             );
-
         }
     }
 
-
-    /* fundo do modal */
 
     const backdrop =
         document.createElement(
@@ -1417,11 +1257,8 @@ function mostrarDetalhesFilme(
 
         backdrop.style.backgroundImage =
             `url(${URL_IMAGEM}${filme.backdrop_path})`;
-
     }
 
-
-    /* layout */
 
     const layout =
         document.createElement(
@@ -1433,8 +1270,6 @@ function mostrarDetalhesFilme(
         "detalhes_layout"
     );
 
-
-    /* poster */
 
     const poster =
         document.createElement(
@@ -1451,15 +1286,12 @@ function mostrarDetalhesFilme(
 
         poster.src =
             `${URL_IMAGEM}${filme.poster_path}`;
-
     }
 
 
     poster.alt =
         `Pôster de ${filme.title}`;
 
-
-    /* informacoes */
 
     const info =
         document.createElement(
@@ -1569,8 +1401,6 @@ function mostrarDetalhesFilme(
     );
 
 
-    /* generos */
-
     const generos =
         document.createElement(
             "div"
@@ -1603,12 +1433,9 @@ function mostrarDetalhesFilme(
             generos.appendChild(
                 generoElemento
             );
-
         }
     );
 
-
-    /* sinopse */
 
     const tituloSinopse =
         document.createElement(
@@ -1640,8 +1467,6 @@ function mostrarDetalhesFilme(
         filme.overview ||
         "Sinopse não disponível para este filme.";
 
-
-    /* monta as informacoes */
 
     info.appendChild(
         titulo
@@ -1725,7 +1550,6 @@ async function abrirTrailerPorId(
             throw new Error(
                 "Não foi possível carregar o trailer."
             );
-
         }
 
 
@@ -1748,86 +1572,7 @@ async function abrirTrailerPorId(
 
         detalhesFilme.innerHTML =
             "<p>Não foi possível carregar o trailer.</p>";
-
     }
-}
-
-
-destaqueTrailer.addEventListener(
-    "click",
-    function () {
-
-        if (!filmeDestaqueAtual) {
-
-            return;
-
-        }
-
-
-        abrirTrailerPorId(
-            filmeDestaqueAtual.id
-        );
-
-    }
-);
-
-
-/* =========================
-   FAVORITOS - TELA
-========================= */
-
-
-function mostrarFavoritos() {
-
-    mostrarTelaResultados();
-
-
-    tituloSecao.textContent =
-        "Meus favoritos";
-
-
-    if (
-        favoritos.length === 0
-    ) {
-
-        mostrarMensagem(
-            "Você ainda não adicionou nenhum filme aos favoritos."
-        );
-
-
-        return;
-
-    }
-
-
-    mostrarFilmes(
-        favoritos
-    );
-}
-
-
-/* =========================
-   FUNCOES AUXILIARES
-========================= */
-
-
-function formatarDuracao(
-    minutos
-) {
-
-    const horas =
-        Math.floor(
-            minutos / 60
-        );
-
-
-    const minutosRestantes =
-        minutos % 60;
-
-
-    return (
-        `${horas}h ${minutosRestantes}min`
-    );
 }
 
 
@@ -1840,14 +1585,11 @@ function encontrarTrailer(
         [];
 
 
-    /* tenta achar primeiro o trailer oficial */
-
     const trailerOficial =
         videos.find(
             function (video) {
 
                 return (
-
                     video.site ===
                         "YouTube" &&
 
@@ -1856,9 +1598,7 @@ function encontrarTrailer(
 
                     video.official ===
                         true
-
                 );
-
             }
         );
 
@@ -1866,26 +1606,20 @@ function encontrarTrailer(
     if (trailerOficial) {
 
         return trailerOficial;
-
     }
 
-
-    /* se nao tiver oficial pega qualquer trailer */
 
     const trailer =
         videos.find(
             function (video) {
 
                 return (
-
                     video.site ===
                         "YouTube" &&
 
                     video.type ===
                         "Trailer"
-
                 );
-
             }
         );
 
@@ -1893,26 +1627,20 @@ function encontrarTrailer(
     if (trailer) {
 
         return trailer;
-
     }
 
-
-    /* ultima tentativa eh um teaser */
 
     const teaser =
         videos.find(
             function (video) {
 
                 return (
-
                     video.site ===
                         "YouTube" &&
 
                     video.type ===
                         "Teaser"
-
                 );
-
             }
         );
 
@@ -1937,8 +1665,8 @@ function abrirTrailer(
             "Nenhum trailer disponível para este filme."
         );
 
-        return;
 
+        return;
     }
 
 
@@ -2004,7 +1732,6 @@ function abrirTrailer(
             mostrarDetalhesFilme(
                 filme
             );
-
         }
     );
 
@@ -2066,8 +1793,6 @@ function abrirTrailer(
 }
 
 
-/* fecha o modal e para qualquer video aberto */
-
 function fecharModalFilme() {
 
     const players =
@@ -2084,7 +1809,6 @@ function fecharModalFilme() {
 
 
             player.remove();
-
         }
     );
 
@@ -2100,8 +1824,41 @@ function fecharModalFilme() {
 
 
 /* =========================
-   NAVEGACAO
+   FAVORITOS / NAVEGACAO
 ========================= */
+
+
+function mostrarFavoritos() {
+
+    mostrarTelaResultados();
+
+
+    atualizarMenuAtivo(
+        linkFavoritos
+    );
+
+
+    tituloSecao.textContent =
+        "Meus favoritos";
+
+
+    if (
+        favoritos.length === 0
+    ) {
+
+        mostrarMensagem(
+            "Você ainda não adicionou nenhum filme aos favoritos."
+        );
+
+
+        return;
+    }
+
+
+    mostrarFilmes(
+        favoritos
+    );
+}
 
 
 function mostrarInicio() {
@@ -2114,103 +1871,29 @@ function mostrarInicio() {
 }
 
 
-linkInicio.addEventListener(
-    "click",
-    function (event) {
-
-        event.preventDefault();
-
-
-        mostrarInicio();
-
-    }
-);
-
-
-linkFavoritos.addEventListener(
-    "click",
-    function (event) {
-
-        event.preventDefault();
-
-
-        mostrarFavoritos();
-
-    }
-);
-
-
 /* =========================
-   EVENTOS GERAIS
+   FUNCOES AUXILIARES
 ========================= */
 
 
-fecharModal.addEventListener(
-    "click",
-    fecharModalFilme
-);
+function formatarDuracao(
+    minutos
+) {
+
+    const horas =
+        Math.floor(
+            minutos / 60
+        );
 
 
-botaoBusca.addEventListener(
-    "click",
-    buscarFilmes
-);
+    const minutosRestantes =
+        minutos % 60;
 
 
-campoBusca.addEventListener(
-    "keydown",
-    function (event) {
-
-        if (
-            event.key ===
-            "Enter"
-        ) {
-
-            buscarFilmes();
-
-        }
-
-    }
-);
-
-
-modal.addEventListener(
-    "click",
-    function (event) {
-
-        if (
-            event.target ===
-            modal
-        ) {
-
-            fecharModalFilme();
-
-        }
-
-    }
-);
-
-
-document.addEventListener(
-    "keydown",
-    function (event) {
-
-        if (
-            event.key ===
-            "Escape"
-        ) {
-
-            fecharModalFilme();
-
-        }
-
-    }
-);
-
-
-/* =========================
-   DESTAQUE DA HOME
-========================= */
+    return (
+        `${horas}h ${minutosRestantes}min`
+    );
+}
 
 
 function mostrarDestaque(
@@ -2225,7 +1908,6 @@ function mostrarDestaque(
                     filme.backdrop_path &&
                     filme.overview
                 );
-
             }
         );
 
@@ -2251,7 +1933,6 @@ function mostrarDestaque(
 
 
         return;
-
     }
 
 
@@ -2305,14 +1986,106 @@ function mostrarDestaque(
 
 
 /* =========================
-   INICIALIZACAO
+   EVENTOS
 ========================= */
 
 
-configurarCarrosseis();
+linkInicio.addEventListener(
+    "click",
+    function (event) {
+
+        event.preventDefault();
 
 
-carregarHome();
+        mostrarInicio();
+    }
+);
+
+
+linkFavoritos.addEventListener(
+    "click",
+    function (event) {
+
+        event.preventDefault();
+
+
+        mostrarFavoritos();
+    }
+);
+
+
+fecharModal.addEventListener(
+    "click",
+    fecharModalFilme
+);
+
+
+botaoBusca.addEventListener(
+    "click",
+    buscarFilmes
+);
+
+
+campoBusca.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (
+            event.key ===
+            "Enter"
+        ) {
+
+            buscarFilmes();
+        }
+    }
+);
+
+
+modal.addEventListener(
+    "click",
+    function (event) {
+
+        if (
+            event.target ===
+            modal
+        ) {
+
+            fecharModalFilme();
+        }
+    }
+);
+
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (
+            event.key ===
+            "Escape"
+        ) {
+
+            fecharModalFilme();
+        }
+    }
+);
+
+
+destaqueTrailer.addEventListener(
+    "click",
+    function () {
+
+        if (!filmeDestaqueAtual) {
+
+            return;
+        }
+
+
+        abrirTrailerPorId(
+            filmeDestaqueAtual.id
+        );
+    }
+);
 
 
 destaqueDetalhes.addEventListener(
@@ -2322,13 +2095,22 @@ destaqueDetalhes.addEventListener(
         if (!filmeDestaqueAtual) {
 
             return;
-
         }
 
 
         carregarDetalhesFilme(
             filmeDestaqueAtual.id
         );
-
     }
 );
+
+
+/* =========================
+   INICIALIZACAO
+========================= */
+
+
+configurarCarrosseis();
+
+
+carregarHome();

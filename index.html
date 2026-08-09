@@ -21,7 +21,9 @@
 
 <body>
 
-    <!-- CABEÇALHO -->
+    <!-- =========================
+         CABEÇALHO
+    ========================== -->
 
     <header class="cabecalho">
 
@@ -72,9 +74,12 @@
     </header>
 
 
+
     <main>
 
-        <!-- FILME EM DESTAQUE -->
+        <!-- =========================
+             FILME EM DESTAQUE
+        ========================== -->
 
         <section
             class="destaque"
@@ -116,10 +121,7 @@
 
                     <button
                         type="button"
-                        class="
-                            destaque_botao
-                            destaque_botao_principal
-                        "
+                        class="destaque_botao destaque_botao_principal"
                         id="destaque_trailer"
                     >
                         ▶ Assistir trailer
@@ -128,10 +130,7 @@
 
                     <button
                         type="button"
-                        class="
-                            destaque_botao
-                            destaque_botao_secundario
-                        "
+                        class="destaque_botao destaque_botao_secundario"
                         id="destaque_detalhes"
                     >
                         ⓘ Ver detalhes
@@ -144,14 +143,20 @@
         </section>
 
 
-        <!-- CATÁLOGO DA HOME -->
+
+        <!-- =========================
+             CATÁLOGO DA HOME
+        ========================== -->
 
         <section
             class="catalogo_home"
             id="catalogo_home"
         >
 
-            <!-- POPULARES -->
+
+            <!-- =====================
+                 FILMES POPULARES
+            ====================== -->
 
             <section class="categoria">
 
@@ -172,15 +177,40 @@
                 </div>
 
 
-                <div
-                    class="carrossel_filmes"
-                    id="lista_populares"
-                ></div>
+                <div class="carrossel_container">
+
+                    <button
+                        type="button"
+                        class="botao_carrossel botao_anterior"
+                        aria-label="Ver filmes anteriores"
+                    >
+                        ‹
+                    </button>
+
+
+                    <div
+                        class="carrossel_filmes"
+                        id="lista_populares"
+                    ></div>
+
+
+                    <button
+                        type="button"
+                        class="botao_carrossel botao_proximo"
+                        aria-label="Ver próximos filmes"
+                    >
+                        ›
+                    </button>
+
+                </div>
 
             </section>
 
 
-            <!-- MAIS BEM AVALIADOS -->
+
+            <!-- =====================
+                 MAIS BEM AVALIADOS
+            ====================== -->
 
             <section class="categoria">
 
@@ -193,15 +223,40 @@
                 </div>
 
 
-                <div
-                    class="carrossel_filmes"
-                    id="lista_avaliados"
-                ></div>
+                <div class="carrossel_container">
+
+                    <button
+                        type="button"
+                        class="botao_carrossel botao_anterior"
+                        aria-label="Ver filmes anteriores"
+                    >
+                        ‹
+                    </button>
+
+
+                    <div
+                        class="carrossel_filmes"
+                        id="lista_avaliados"
+                    ></div>
+
+
+                    <button
+                        type="button"
+                        class="botao_carrossel botao_proximo"
+                        aria-label="Ver próximos filmes"
+                    >
+                        ›
+                    </button>
+
+                </div>
 
             </section>
 
 
-            <!-- EM CARTAZ -->
+
+            <!-- =====================
+                 EM CARTAZ
+            ====================== -->
 
             <section class="categoria">
 
@@ -214,15 +269,40 @@
                 </div>
 
 
-                <div
-                    class="carrossel_filmes"
-                    id="lista_cartaz"
-                ></div>
+                <div class="carrossel_container">
+
+                    <button
+                        type="button"
+                        class="botao_carrossel botao_anterior"
+                        aria-label="Ver filmes anteriores"
+                    >
+                        ‹
+                    </button>
+
+
+                    <div
+                        class="carrossel_filmes"
+                        id="lista_cartaz"
+                    ></div>
+
+
+                    <button
+                        type="button"
+                        class="botao_carrossel botao_proximo"
+                        aria-label="Ver próximos filmes"
+                    >
+                        ›
+                    </button>
+
+                </div>
 
             </section>
 
 
-            <!-- PRÓXIMOS LANÇAMENTOS -->
+
+            <!-- =====================
+                 PRÓXIMOS LANÇAMENTOS
+            ====================== -->
 
             <section class="categoria">
 
@@ -235,17 +315,42 @@
                 </div>
 
 
-                <div
-                    class="carrossel_filmes"
-                    id="lista_lancamentos"
-                ></div>
+                <div class="carrossel_container">
+
+                    <button
+                        type="button"
+                        class="botao_carrossel botao_anterior"
+                        aria-label="Ver filmes anteriores"
+                    >
+                        ‹
+                    </button>
+
+
+                    <div
+                        class="carrossel_filmes"
+                        id="lista_lancamentos"
+                    ></div>
+
+
+                    <button
+                        type="button"
+                        class="botao_carrossel botao_proximo"
+                        aria-label="Ver próximos filmes"
+                    >
+                        ›
+                    </button>
+
+                </div>
 
             </section>
 
         </section>
 
 
-        <!-- PESQUISA / FAVORITOS -->
+
+        <!-- =========================
+             PESQUISA / FAVORITOS
+        ========================== -->
 
         <section
             class="filmes resultados_view oculto"
@@ -283,7 +388,10 @@
     </main>
 
 
-    <!-- MODAL DE DETALHES -->
+
+    <!-- =========================
+         MODAL DE DETALHES
+    ========================== -->
 
     <div
         class="modal"
@@ -309,7 +417,10 @@
     </div>
 
 
-    <!-- JAVASCRIPT -->
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
 
     <script src="config.js"></script>
 

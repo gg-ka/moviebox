@@ -57,6 +57,16 @@ function mostrarCarrossel(filmes, container) {
 
         container.appendChild(card);
     });
+
+    container.scrollLeft = 0;
+
+    requestAnimationFrame(function () {
+
+        atualizarBotoesCarrossel(
+            container
+        );
+
+    });
 }
 
 async function buscarCategoria(endpoint) {
@@ -139,7 +149,7 @@ async function carregarHome() {
         );
 
         const proximosLancamentos = filtrarProximosLancamentos(lancamentos);
-        
+
         mostrarCarrossel(
             proximosLancamentos,
             listaLancamentos
@@ -153,6 +163,114 @@ async function carregarHome() {
             erro
         );
     }
+}
+
+function atualizarBotoesCarrossel(carrossel) {
+
+    const container =
+        carrossel.closest(".carrossel_container");
+
+
+    if (!container) {
+        return;
+    }
+
+
+    const botaoAnterior =
+        container.querySelector(".botao_anterior");
+
+    const botaoProximo =
+        container.querySelector(".botao_proximo");
+
+
+    const estaNoInicio =
+        carrossel.scrollLeft <= 5;
+
+
+    const estaNoFim =
+        carrossel.scrollLeft +
+        carrossel.clientWidth >=
+        carrossel.scrollWidth - 5;
+
+
+    botaoAnterior.disabled =
+        estaNoInicio;
+
+    botaoProximo.disabled =
+        estaNoFim;
+}
+
+function configurarCarrosseis() {
+
+    const containers =
+        document.querySelectorAll(
+            ".carrossel_container"
+        );
+
+
+    containers.forEach(function (container) {
+
+        const carrossel =
+            container.querySelector(
+                ".carrossel_filmes"
+            );
+
+
+        const botaoAnterior =
+            container.querySelector(
+                ".botao_anterior"
+            );
+
+
+        const botaoProximo =
+            container.querySelector(
+                ".botao_proximo"
+            );
+
+
+        botaoAnterior.addEventListener(
+            "click",
+            function () {
+
+                const distancia =
+                    carrossel.clientWidth * 0.8;
+
+
+                carrossel.scrollBy({
+                    left: -distancia,
+                    behavior: "smooth"
+                });
+            }
+        );
+
+
+        botaoProximo.addEventListener(
+            "click",
+            function () {
+
+                const distancia =
+                    carrossel.clientWidth * 0.8;
+
+
+                carrossel.scrollBy({
+                    left: distancia,
+                    behavior: "smooth"
+                });
+            }
+        );
+
+
+        carrossel.addEventListener(
+            "scroll",
+            function () {
+
+                atualizarBotoesCarrossel(
+                    carrossel
+                );
+            }
+        );
+
+    });
 }
 
 function carregarFavoritosSalvos() {
@@ -779,6 +897,8 @@ function mostrarDestaque(filmes) {
             ? filme.overview.slice(0, 220) + "..."
             : filme.overview;
 }
+
+configurarCarrosseis();
 
 carregarHome();
 

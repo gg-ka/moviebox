@@ -788,6 +788,14 @@ input {
    CARROSSEL
 ========================= */
 
+.carrossel_container {
+    position: relative;
+    width: 100%;
+}
+
+
+/* LISTA HORIZONTAL */
+
 .carrossel_filmes {
     display: flex;
 
@@ -798,13 +806,24 @@ input {
     overflow-x: auto;
     overflow-y: hidden;
 
-    padding: 4px 2px 16px;
+    padding: 8px 2px 16px;
 
     scroll-behavior: smooth;
+
+    scrollbar-width: none;
 }
 
 
-/* cada card da HOME */
+/* esconde scrollbar no Chrome/Edge */
+
+.carrossel_filmes::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* =========================
+   CARD DO CARROSSEL
+========================= */
 
 .carrossel_filmes .card_filme {
     flex: 0 0 200px;
@@ -815,7 +834,7 @@ input {
 }
 
 
-/* pôster do card */
+/* pôster */
 
 .carrossel_filmes .card_filme img {
     display: block;
@@ -829,18 +848,20 @@ input {
 }
 
 
-/* informações embaixo */
+/* informações */
 
 .carrossel_filmes .card_conteudo {
     padding: 12px;
 }
 
+
 .carrossel_filmes .card_conteudo h2 {
+    margin: 0 0 7px;
+
     font-size: 15px;
     line-height: 1.3;
-
-    margin: 0 0 7px;
 }
+
 
 .carrossel_filmes .card_conteudo p {
     margin: 0;
@@ -849,19 +870,93 @@ input {
 }
 
 
-/* scrollbar discreta */
+/* =========================
+   SETAS DO CARROSSEL
+========================= */
 
-.carrossel_filmes::-webkit-scrollbar {
-    height: 6px;
+.botao_carrossel {
+    position: absolute;
+
+    top: 8px;
+    bottom: 16px;
+
+    z-index: 20;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 64px;
+
+    padding: 0;
+
+    border: none;
+
+    color: #ffffff;
+
+    font-size: 52px;
+    font-weight: 300;
+    line-height: 1;
+
+    cursor: pointer;
+
+    opacity: 0;
+    pointer-events: none;
+
+    transition:
+        opacity 0.2s ease,
+        background 0.2s ease;
 }
 
-.carrossel_filmes::-webkit-scrollbar-track {
-    background: transparent;
+
+/* seta esquerda */
+
+.botao_anterior {
+    left: 0;
+
+    border-radius: 14px 0 0 14px;
+
+    background:
+        linear-gradient(
+            to right,
+            rgba(11, 11, 12, 0.96),
+            rgba(11, 11, 12, 0.65) 45%,
+            transparent
+        );
 }
 
-.carrossel_filmes::-webkit-scrollbar-thumb {
-    background: #3b3b3b;
-    border-radius: 999px;
+
+/* seta direita */
+
+.botao_proximo {
+    right: 0;
+
+    border-radius: 0 14px 14px 0;
+
+    background:
+        linear-gradient(
+            to left,
+            rgba(11, 11, 12, 0.96),
+            rgba(11, 11, 12, 0.65) 45%,
+            transparent
+        );
+}
+
+
+/* mostra as setas quando passa o mouse */
+
+.carrossel_container:hover
+.botao_carrossel:not(:disabled) {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+/* quando chegou no começo/fim */
+
+.botao_carrossel:disabled {
+    opacity: 0;
+    pointer-events: none;
 }
 
 /* RESPONSIVIDADE */
@@ -934,7 +1029,7 @@ input {
     }
 
     .destaque_conteudo h2 {
-        font-size: clamp(38px, 11vw, 52px);
+        font-size: clamp(38px, 11vw, 20px);
         line-height: 1;
         letter-spacing: -1.4px;
     }
@@ -1005,6 +1100,10 @@ input {
 
     .carrossel_filmes .card_filme img {
         height: 225px;
+    }
+
+    .botao_carrossel {
+        display: none;
     }
 
 }
